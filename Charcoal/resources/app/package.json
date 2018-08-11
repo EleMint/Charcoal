@@ -1,12 +1,17 @@
 {
-  "name": "electrontest",
+  "name": "charcoal",
   "version": "0.1.0",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EleMint/Charcoal"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "author": "",
+  "keywords": [],
+  "author": "Dylan Schmidt",
   "license": "MIT",
   "devDependencies": {
     "electron": "^2.0.7"
