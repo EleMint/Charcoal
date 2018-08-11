@@ -46,6 +46,13 @@ const loginMenuTemplate = [
                     app.quit();
                 }
             },
+            {
+                label: 'Index Window',
+                click(){
+                    createIndexWindow();
+                    loginWindow.close();
+                }
+            }
         ]
     },
     {
