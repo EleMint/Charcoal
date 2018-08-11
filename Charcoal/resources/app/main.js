@@ -1,40 +1,67 @@
 const {app, BrowserWindow, Menu} = require('electron');
 
-let win;
+let loginWindow;
+let registerWindow;
+let indexWindow;
 
 
-function createWindow () {
-    win = new BrowserWindow({width: 800, height: 600});
+app.on('ready', createLoginWindow);
 
-    const menu = Menu.buildFromTemplate(mainMenuTemplate);
+function createLoginWindow(){
+    loginWindow = new BrowserWindow({width: 800, height: 600});
+    const menu = Menu.buildFromTemplate(loginMenuTemplate);
     Menu.setApplicationMenu(menu);
+    loginWindow.loadFile('login.html');
 
-    win.loadFile('index.html');
-
-    //win.webContents.openDevTools();
-
-    win.on('closed', () => {
-        win = null;
-    });
+    loginWindow.on('closed', function(){
+        loginWindow = null;
+    })
 }
-const mainMenuTemplate = [
+const loginMenuTemplate = [
+    {
+        label: 'File',
+        submenu: [
+            {
+                label: 'Login',
+                click(){
+                    // Goto: Login Page
+                }
+            },
+            {
+                label: 'Register',
+                click(){
+                    // Goto: Register Page
+                }
+            },
+        ]
+    },
+    {
+        label: 'Edit'
+    }
+];
+
+function createRegisterWindow(){
+    registerWindow = new BrowserWindow({width: 800, height: 600});
+    const menu = Menu.buildFromTemplate(registerMenuTemplate);
+    Menu.setApplicationMenu(menu);
+    registerWindow.loadFile('register.html');
+
+    registerWindow.on('closed', function(){
+        registerWindow = null;
+    })
+}
+const registerMenuTemplate = [
+
+];
+const indexMenuTemplate = [
     {
         label: 'File'
     }
 ];
 
-app.on('ready', createWindow);
 
-app.on('window-all-closed', () => {
-    // On macOS it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
-
-app.on('activate', () => {
-    if (win === null) {
-        createWindow();
-    }
-});
+if(process.platform == 'darwin'){
+    loginMenuTemplate.unshift({});
+    registerMenuTemplate.unshift({});
+    indexMenuTemplate.unshift({});
+}
