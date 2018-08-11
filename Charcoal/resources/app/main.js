@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, BrowserWindow, Menu, icpMain} = require('electron');
 
 let loginWindow;
 let registerWindow;
@@ -22,13 +22,13 @@ const loginMenuTemplate = [
         label: 'File',
         submenu: [
             {
-                label: 'Login',
+                label: 'Something',
                 click(){
                     // Goto: Login Page
                 }
             },
             {
-                label: 'Register',
+                label: 'Close',
                 click(){
                     // Goto: Register Page
                 }
@@ -36,26 +36,36 @@ const loginMenuTemplate = [
         ]
     },
     {
-        label: 'Edit'
+        label: 'Page',
+        submenu: [
+            {
+                role: 'reload'
+            }
+        ]
     }
 ];
 
-function createRegisterWindow(){
-    registerWindow = new BrowserWindow({width: 800, height: 600});
-    const menu = Menu.buildFromTemplate(registerMenuTemplate);
+function createIndexWindow(){
+    indexWindow = new BrowserWindow({width: 800, height: 600});
+    const menu = Menu.buildFromTemplate(indexMenuTemplate);
     Menu.setApplicationMenu(menu);
-    registerWindow.loadFile('register.html');
+    indexWindow.loadFile('index.html');
 
-    registerWindow.on('closed', function(){
-        registerWindow = null;
-    })
+    indexWindow.on('closed', function(){
+        indexWindow = null;
+    });
 }
-const registerMenuTemplate = [
-
-];
 const indexMenuTemplate = [
     {
-        label: 'File'
+        label: 'File',
+        submenu: [
+            {
+                label: 'Preferences',
+                click(){
+                    // Goto: Preferences
+                }
+            }
+        ]
     }
 ];
 
@@ -65,3 +75,12 @@ if(process.platform == 'darwin'){
     registerMenuTemplate.unshift({});
     indexMenuTemplate.unshift({});
 }
+
+
+// Login Modal Username and Password
+icpMain.on('user:login', function(e, userName, password){
+    // Firebase check login
+    // if in database => redirect to index
+    // else redirect to login
+    indexWindow.webContents.send('user:loggedIn', user_json);
+});
