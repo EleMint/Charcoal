@@ -9,8 +9,8 @@ app.use(express.static('public'));
 console.log('Server is now running...');
 
 io.sockets.on('connection', function(socket){
-    console.log(socket);
-    sockets.on('message', gotMessage);
+    console.log(socket.id);
+    io.sockets.on('message', gotMessage);
 });
 
 function gotMessage(message){

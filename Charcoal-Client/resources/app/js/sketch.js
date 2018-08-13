@@ -1,4 +1,5 @@
-const socket = socket.io.connect('http://localhost:3000');
+const io = require('socket.io-client');
+const socket = io('http://localhost:3000');
 
 // Incoming Message
 socket.on('message', function(data){

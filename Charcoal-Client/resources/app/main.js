@@ -17,12 +17,17 @@ let indexWindow;
   firebase.initializeApp(config); */}
 
 app.on('ready', createLoginWindow);
+app.on('window-all-closed', function(){
+    app.quit();
+});
 
 function createLoginWindow(){
-    loginWindow = new BrowserWindow({width: 800, height: 600, icon: 'assets/carbon.png'});
+    loginWindow = new BrowserWindow({width: 800, height: 600, icon: 'assets/carbon.ico'});
     const menu = Menu.buildFromTemplate(loginMenuTemplate);
     Menu.setApplicationMenu(menu);
     loginWindow.loadFile('html/login.html');
+
+    loginWindow.toggleDevTools();
 
     loginWindow.on('closed', function(){
         loginWindow = null;

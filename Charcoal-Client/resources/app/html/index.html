@@ -22,6 +22,19 @@
             </div>
             <label class="pure-overlay" for="pure-toggle-left" data-overlay="left"></label> 
         </div>
+        <script>
+            const socket = socket.io.connect('http://localhost:3000');
+
+            // Incoming Message
+            socket.on('message', function(data){
+                console.log(message);
+            });
+
+            // // Send Message
+            // function sendMessage(message){
+            //     socket.emit('message', message);
+            // }
+        </script>
         <script src="../js/sketch.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     </body>
