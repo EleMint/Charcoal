@@ -5,11 +5,12 @@
         <link rel="stylesheet" href="../css/styles.css"/>
     </head>
 <body>
-
-    <h2 class="center">Modal Login Form</h2>
+</br>
+</br>
+    <h2 class="center">Welcome To Charcoal</h2>
 
     <div class="center">
-        <button onclick="document.getElementById('modal').style.display='block'" style="width:auto;">Login</button>
+        <button class="button" onclick="document.getElementById('modal').style.display='block'" style="width:auto;">Login</button>
     </div>
     <div id="modal" class="modal">
   
@@ -25,13 +26,10 @@
                 <label for="psw"><b>Password</b></label>
                 <input id="password" type="password" placeholder="Enter Password" name="psw" required>
         
-                <button type="submit">Login</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                </label>
+                <button class="button" type="submit">Login</button>
             </div>
 
-            <div class="container" style="background-color:#f1f1f1">
+            <div class="container" style="background-color:#686868">
                 <button id="modalSubmit" type="button" onclick="document.getElementById('modal').style.display='none'" class="cancelbtn">Cancel</button>
                 <span class="psw">Forgot <a href="forgotPassword.html">password?</a></span>
             </div>
@@ -59,6 +57,7 @@
     }
 
 </script>
-
+<script src="sketch.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 </body>
 </html>

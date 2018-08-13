@@ -1,4 +1,5 @@
 const {app, BrowserWindow, Menu, icpMain} = require('electron');
+const socket = io.connect('http://localhost:3000');
 
 let loginWindow;
 let registerWindow;
@@ -15,7 +16,6 @@ let indexWindow;
     messagingSenderId: FirebaseMessagingSenderId
   };
   firebase.initializeApp(config); */}
-
 
 app.on('ready', createLoginWindow);
 
@@ -115,7 +115,7 @@ const registerMenuTemplate = [
 ];
 
 function createIndexWindow(){
-    indexWindow = new BrowserWindow({width: 800, height: 600});
+    indexWindow = new BrowserWindow({width: 800, height: 600, icon: 'assets/carbon.png'});
     const menu = Menu.buildFromTemplate(indexMenuTemplate);
     Menu.setApplicationMenu(menu);
     indexWindow.loadFile('html/index.html');
