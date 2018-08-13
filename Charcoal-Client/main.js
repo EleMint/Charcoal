@@ -20,10 +20,10 @@ let indexWindow;
 app.on('ready', createLoginWindow);
 
 function createLoginWindow(){
-    loginWindow = new BrowserWindow({width: 800, height: 600});
+    loginWindow = new BrowserWindow({width: 800, height: 600, icon: 'assets/carbon.png'});
     const menu = Menu.buildFromTemplate(loginMenuTemplate);
     Menu.setApplicationMenu(menu);
-    loginWindow.loadFile('login.html');
+    loginWindow.loadFile('html/login.html');
 
     loginWindow.on('closed', function(){
         loginWindow = null;
@@ -34,9 +34,10 @@ const loginMenuTemplate = [
         label: 'File',
         submenu: [
             {
-                label: 'Something',
+                label: 'Register',
                 click(){
-                    // Goto: Login Page
+                    loginWindow.close();
+                    createRegisterWindow();
                 }
             },
             {
@@ -65,11 +66,59 @@ const loginMenuTemplate = [
     }
 ];
 
+function createRegisterWindow(){
+    registerWindow = new BrowserWindow({width: 800, height: 600, icon: 'assets/carbon.png'});
+    const menu = Menu.buildFromTemplate(registerMenuTemplate);
+    Menu.setApplicationMenu(menu);
+    registerWindow.loadFile('html/register.html');
+
+    registerWindow.on('closed', function(){
+        registerWindow = null;
+    });
+}
+
+const registerMenuTemplate = [
+    {
+        label: 'File',
+        submenu: [
+            {
+                label: 'Login',
+                click(){
+                    registerWindow.close();
+                    createLoginWindow();
+                }
+            },
+            {
+                label: 'Quit',
+                accelerator: 'Ctrl+Q',
+                click(){
+                    app.quit();
+                }
+            },
+            {
+                label: 'Index Window',
+                click(){
+                    registerWindow.close();
+                    createIndexWindow();
+                }
+            }
+        ]
+    },
+    {
+        label: 'Page',
+        submenu: [
+            {
+                role: 'reload'
+            }
+        ]
+    }
+];
+
 function createIndexWindow(){
     indexWindow = new BrowserWindow({width: 800, height: 600});
     const menu = Menu.buildFromTemplate(indexMenuTemplate);
     Menu.setApplicationMenu(menu);
-    indexWindow.loadFile('index.html');
+    indexWindow.loadFile('html/index.html');
 
     indexWindow.on('closed', function(){
         indexWindow = null;

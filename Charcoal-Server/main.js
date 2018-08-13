@@ -1,5 +1,5 @@
-const app = require('express');
-const http = require('http').Server(app);
+const express = require('express');
+const http = require('http').Server(express);
 const io = require('socket.io').apply(http);
 const path = require('path');
 const url = require('url');
