@@ -4,17 +4,7 @@ let loginWindow;
 let registerWindow;
 let indexWindow;
 
-{/* <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
-  // Initialize Firebase
-  var config = {
-    apiKey: FirebaseAPIKey,
-    authDomain: FirebaseAuthDomain,
-    databaseURL: FirebaseURL,
-    projectId: FirebaseProjectId,
-    storageBucket: FirebaseStoragebucket,
-    messagingSenderId: FirebaseMessagingSenderId
-  };
-  firebase.initializeApp(config); */}
+
 
 app.on('ready', createLoginWindow);
 app.on('window-all-closed', function(){
@@ -80,6 +70,10 @@ function createRegisterWindow(){
         registerWindow = null;
     });
 }
+
+
+
+
 
 const registerMenuTemplate = [
     {
@@ -151,9 +145,11 @@ if(process.platform == 'darwin'){
 
 
 // Login Modal Username and Password
-// icpMain.on('user:login', function(e, userName, password){
-//     // Firebase check login
-//     // if in database => redirect to index
-//     // else redirect to login
-//     // indexWindow.webContents.send('user:loggedIn', user_json);
-// });
+icpRenderer.on('user:login', function(e, userName, password){
+    // Firebase check login
+    // if in database => redirect to index
+    // else redirect to login
+    // indexWindow.webContents.send('user:loggedIn', user_json);
+    console.log('login');
+});
+
