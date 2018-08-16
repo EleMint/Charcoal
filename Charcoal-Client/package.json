@@ -1,0 +1,26 @@
+{
+  "name": "charcoal-client",
+  "version": "0.0.1",
+  "description": "Charcoal Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "build --dir"
+  },
+  "build": {
+    "appId": "com.Charcoal.Charcoal",
+    "productName": "Charcoal"
+  },
+  "repository": "https://github.com/EleMint/Charcoal",
+  "keywords": [
+    "Electron",
+    "Charcoal",
+    "Client",
+    "Slack"
+  ],
+  "author": "Dylan Schmidt",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^2.0.7"
+  }
+}
