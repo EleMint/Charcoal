@@ -22,16 +22,16 @@
             </div>
 
             <div class="container">
-                <label for="uname"><b>Username</b></label>
-                <input id="Luname" type="text" placeholder="Enter Username" name="uname" required>
+                <label for="uname"><b>Email</b></label>
+                <input id="logEmail" type="text" placeholder="Enter Username" name="uname" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input id="Lpassword" type="password" placeholder="Enter Password" name="psw" required>
+                <input id="logPassword" type="password" placeholder="Enter Password" name="psw" required>
         
-                <button class="button" type="submit">Login</button>
+                <button id="logModalSubmit" class="button" type="submit">Login</button>
             </div>
             <div class="container" style="background-color:#686868">
-                <button id="logModalSubmit" type="button" onclick="document.getElementById('logModal').style.display='none'" class="cancelbtn">Cancel</button>
+                <button id="logModalCancel" type="button" onclick="document.getElementById('logModal').style.display='none'" class="cancelbtn">Cancel</button>
                 <span class="psw">Forgot <a href="forgotPassword.html">password?</a></span>
             </div>
         </form>
@@ -45,11 +45,11 @@
             </div>
 
             <div class="container">
-                <label for="uname"><b>Username</b></label>
-                <input id="Runame" type="text" placeholder="Enter Username" name="uname" required>
+                <label for="uname"><b>Email</b></label>
+                <input id="regEmail" type="text" placeholder="Enter Username" name="uname" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input id="Rpassword" type="password" placeholder="Enter Password" name="psw" required>
+                <input id="regPassword" type="password" placeholder="Enter Password" name="psw" required>
 
                 <label for="cPsw"><b>Confirm Password</b></label>
                 <input id="RconfirmPassword" type="password" placeholder="Confirm Password" name="cPsw" required>
@@ -57,17 +57,17 @@
                 <label for="workplace"><b>Workplace</b></label>
                 <input id="Rworkplace" type="text" placeholder="Enter Workplace" name="workplace" required>
         
-                <button class="button" type="submit">Register</button>
+                <button id="regModalSubmit" class="button" type="submit">Register</button>
             </div>
 
             <div class="container" style="background-color:#686868">
-                <button id="regModalSubmit" type="button" onclick="document.getElementById('regModal').style.display='none'" class="cancelbtn">Cancel</button>
+                <button id="regModalCancel" type="button" onclick="document.getElementById('regModal').style.display='none'" class="cancelbtn">Cancel</button>
             </div>
         </form>
     </div>
-<script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 <script src="../renderer.js"></script>
 <script src="../main.js"></script>
+<script type="modual" src="../keys.js"></script>
 </body>
 </html>

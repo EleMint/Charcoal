@@ -2,10 +2,10 @@ const express = require('express');
 const keys = require('./keys.js');
 const firebase = require('firebase');
 const app = express();
+// TODO: Change Listening IP
 var server = app.listen(3000, '127.0.0.1');
 const socket = require('socket.io');
 var io = socket(server);
-
 app.use(express.static('public'));
 
 console.log('Server is now running....');
@@ -19,50 +19,20 @@ var config = {
     storageBucket: keys.FirebaseStoragebucket,
     messagingSenderId: keys.FirebaseMessagingSenderId
 };
-
 firebase.initializeApp(config);
 var database = firebase.database();
 
 // var ref = database.ref('test/-LK2P1ln1gAGp5wdyZMP');
 // var data = {
-//     from: 'Nevin',
-//     message: 'Help',
+//     from: '',
+//     message: '',
 //     to: null
 // };
 // ref.push(data);
-
-io.sockets.on('connection', function(socket){
-    // Show Status
+io.socket.on('request:APIKeys', function(){
+    io.emit('requested:APIKeys', keys);
 });
 
-// New User Registration
-io.sockets.on('register:userpasswork', function(username, password, workplace){
-    var ref = database.ref('users');
-    var data = {
-        "Username": username,
-        "Password": password,
-        "Workplace": workplace
-    };
-    ref.push(data);
-});
-
-// User Login
-io.sockets.on('login:userpasswork', function(username, password, workplace){
-    var ref = database.ref('users');
-    ref.on('value', function(data){
-        var usersObject = data.val();
-        var users = Object.keys(usersObject);
-        users.forEach(function(user){
-            if(usersObject.user.username === username && usersObject.user.password === password && usersObject.user.workplace === workplace){
-                // Redirect to Index
-            } else {
-                // Restrict Login
-            }
-        });
-    }, function(err){
-        console.log('Error...', err);
-    });
-});
 
 // When Server Receives a Message
 io.sockets.on('message:received', function(message, username, sentTo){
@@ -73,6 +43,17 @@ io.sockets.on('message:received', function(message, username, sentTo){
         to : sentTo
     };
     refM.push(data);
+
+    // Save in Database User Messages
+    for(let i = 0; i < sentTo.length; i++){
+        var refS = database.ref('users' + usersFound[i] + 'messagesRecieved');
+        var data = {
+            message : message,
+            from : username
+        };
+        refS.push(data);
+    }
+
     // Send Message Back To Everyone
     io.emit('message:send', message, sentTo);
 });
