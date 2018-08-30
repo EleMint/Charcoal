@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Charcoal Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EleMint/Charcoal.git"
+  },
+  "keywords": [
+    "Charcoal",
+    "Slack"
+  ],
+  "author": "Dylan Schmidt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EleMint/Charcoal/issues"
+  },
+  "homepage": "https://github.com/EleMint/Charcoal#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "firebase": "^5.4.1",
+    "socket.io": "^2.1.1"
+  }
+}

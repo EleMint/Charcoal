@@ -1,0 +1,27 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "Charcoal Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EleMint/Charcoal.git"
+  },
+  "keywords": [
+    "Charcoal",
+    "Slack"
+  ],
+  "author": "Dylan Schmidt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EleMint/Charcoal/issues"
+  },
+  "homepage": "https://github.com/EleMint/Charcoal#readme",
+  "dependencies": {
+    "electron": "^2.0.8",
+    "socket.io-client": "^2.1.1"
+  }
+}
