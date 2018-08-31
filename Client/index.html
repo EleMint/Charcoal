@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title id="title">Login</title>
     <link rel="stylesheet" href="./css/bootstrap.css">
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase.js"></script>
 </head>
+
 <body>
-    <div id="login">
+    <!--A LOGIN -->
+    <div hidden id="login">
         <div class="container">
             <div class="row">
                 <div class="col-md-3"></div>
@@ -15,6 +18,11 @@
                     <h2 class="center">Welcome To Charcoal</h2>
                     <!--  -->
                     <input type="button" id="seed" value="seed">
+                    <div id="role" class="center">
+                        <input type="radio" name="role" id="owner" value="owner"> Owner
+                        <input type="radio" name="role" id="manager" value="manager"> Manager
+                        <input type="radio" name="role" id="employee" value="employee"> Employee
+                    </div>
                     <!--  -->
                 </div>
                 <div class="col-md-3"></div>
@@ -26,16 +34,16 @@
                     <form>
                         <div class="form-group">
                             <label for="emailInput">Email Address</label>
-                            <input autofocus value="admin@admin.com" type="text" id="emailInput" placeholder="Email" class="form-control">
-                        
+                            <input autofocus type="text" id="emailInput" placeholder="Email" class="form-control">
+
                             <label for="usernameInput">Username</label>
-                            <input type="text" value="admin" id="usernameInput" placeholder="Username" class="form-control">
-                        
+                            <input type="text" id="usernameInput" placeholder="Username" class="form-control">
+
                             <label for="passwordInput">Password</label>
-                            <input type="password" value="password" id="passwordInput" placeholder="Password" class="form-control">
-                        
+                            <input type="password" id="passwordInput" placeholder="Password" class="form-control">
+
                             <label for="workplaceInput">Workplace</label>
-                            <input type="text" value="dCC" id="workplaceInput" placeholder="Workplace" class="form-control">
+                            <input type="text" id="workplaceInput" placeholder="Workplace" class="form-control">
                         </div>
                         <div class="center">
                             <input type="button" id="loginBtn" class="btn btn-primary" value="Login" style="width:150px;">
@@ -48,6 +56,322 @@
             </div>
         </div>
     </div>
+    <!-- OWNER HOME PAGE -->
+    <div hidden id="ownerhomepage">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="ownerviewmanagers">View Managers</h4>
+                        <h4 id="owneraddmanager">Add Manager</h4>
+                        <h4 id="ownerviewemployees">View Employees</h4>
+                        <h4 id="owneraddemployee">Add Employee</h4>
+                        <h4 id="ownerviewmessages">View Messages</h4>
+                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody center">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h5>Choose An Action On The Left To Get Started</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- OWNER CREATE MANAGER -->
+    <div hidden id="ownercreatemanager">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="ownerviewmanagers">View Managers</h4>
+                        <h4 id="owneraddmanager" class="selected">Add Manager</h4>
+                        <h4 id="ownerviewemployees">View Employees</h4>
+                        <h4 id="owneraddemployee">Add Employee</h4>
+                        <h4 id="ownerviewmessages">View Messages</h4>
+                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody">
+                    <h3 class="mainbodyHeading center">Add Manager</h3>
+                    <br/>
+                    <form>
+                        <div class="form-group">
+                            <label for="createmanageremail">Email Address</label>
+                            <input type="text" id="createmanageremail" placeholder="Email" class="form-control">
+
+                            <label for="createmanagerusername">Username</label>
+                            <input type="text" id="createmanagerusername" placeholder="Username" class="form-control">
+
+                            <label for="createmanagerpassword">Password</label>
+                            <input type="password" id="createmanagerpassword" placeholder="Password" class="form-control">
+                        </div>
+                        <div class="center">
+                            <input type="button" id="createmanager" class="btn btn-primary" value="Add" style="width:150px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- OWNER CREATE EMPLOYEE -->
+    <div hidden id="ownercreateemployee">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="ownerviewmanagers">View Managers</h4>
+                        <h4 id="owneraddmanager">Add Manager</h4>
+                        <h4 id="ownerviewemployees">View Employees</h4>
+                        <h4 id="owneraddemployee" class="selected">Add Employee</h4>
+                        <h4 id="ownerviewmessages">View Messages</h4>
+                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody">
+                    <h3 class="mainbodyHeading center">Add Employee</h3>
+                    <br/>
+                    <form>
+                        <div class="form-group">
+                            <label for="createemployeeemail">Email Address</label>
+                            <input type="text" id="createemployeeemail" placeholder="Email" class="form-control">
+
+                            <label for="createemployeeusername">Username</label>
+                            <input type="text" id="createemployeeusername" placeholder="Username" class="form-control">
+
+                            <label for="createemployeepassword">Password</label>
+                            <input type="password" id="createemployeepassword" placeholder="Password" class="form-control">
+                        </div>
+                        <div class="center">
+                            <input type="button" id="createemployee" class="btn btn-primary" value="Add" style="width:150px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- OWNER ACCOUNT INFORMATION -->
+    <div hidden id="owneraccountinformation">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="ownerviewmanagers">View Managers</h4>
+                        <h4 id="owneraddmanager">Add Manager</h4>
+                        <h4 id="ownerviewemployees">View Employees</h4>
+                        <h4 id="owneraddemployee">Add Employee</h4>
+                        <h4 id="ownerviewmessages">View Messages</h4>
+                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody">
+                    <h3 class="mainbodyHeading center">Account Information</h3>
+                    <h4>Email:
+                        <h4 id="ownerinformationemailinner" class="tabbed">test@test.com</h4>
+                    </h4>
+                    <h4>Username:
+                        <h4 id="ownerinformationusernameinner" class="tabbed">Owner</h4>
+                    </h4>
+                    <h4>Workplace:
+                        <h4 id="ownerinformationworkplaceinner" class="tabbed">dCC</h4>
+                    </h4>
+                    <h4>Managers:</h4>
+                    <ul id="ownerinformationmanagers"></ul>
+                    <h4>Employees:</h4>
+                    <ul id="ownerinformationemployees"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- OWNER VIEW MESSAGES -->
+    <div hidden id="ownerviewmessages">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="ownerviewmanagers">View Managers</h4>
+                        <h4 id="owneraddmanager">Add Manager</h4>
+                        <h4 id="ownerviewemployees">View Employees</h4>
+                        <h4 id="owneraddemployee">Add Employee</h4>
+                        <h4 id="ownerviewmessages" class="selected">View Messages</h4>
+                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody center">
+                    <div id="ownerviewmessagesmessages"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MANAGER HOME PAGE -->
+    <div hidden id="managerhomepage">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="managerviewemployees">View Employees</h4>
+                        <h4 id="manageraddemployee">Add Employee</h4>
+                        <h4 id="managerviewmessages">View Messages</h4>
+                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody center">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h5>Choose An Action On The Left To Get Started</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MANAGER CREATE EMPLOYEE -->
+    <div hidden id="managercreateemployee">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="managerviewemployees">View Employees</h4>
+                        <h4 id="manageraddemployee" class="selected">Add Employee</h4>
+                        <h4 id="managerviewmessages">View Messages</h4>
+                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody">
+                    <h3 class="mainbodyHeading center">Add Employee</h3>
+                    <br/>
+                    <form>
+                        <div class="form-group">
+                            <label for="createemployeeemail">Email Address</label>
+                            <input type="text" id="createemployeeemail" placeholder="Email" class="form-control">
+
+                            <label for="createemployeeusername">Username</label>
+                            <input type="text" id="createemployeeusername" placeholder="Username" class="form-control">
+
+                            <label for="createemployeepassword">Password</label>
+                            <input type="password" id="createemployeepassword" placeholder="Password" class="form-control">
+                        </div>
+                        <div class="center">
+                            <input type="button" id="createemployee" class="btn btn-primary" value="Add" style="width:150px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MANAGER VIEW MESSAGES -->
+    <div hidden id="managerviewmessages">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="managerviewemployees">View Employees</h4>
+                        <h4 id="manageraddemployee">Add Employee</h4>
+                        <h4 id="managerviewmessages" class="selected">View Messages</h4>
+                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody center">
+                    <div id="managerviewmessagesmessages"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MANAGER ACCOUNT INFORMATION -->
+    <div hidden id="manageraccountinformation">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 sidebar">
+                    <div class="usernameBox">
+                        <p id="usernameBoxUsername">Username</p>
+                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                    </div>
+                    <div class="actions center">
+                        <h3 class="sidebarHeading">Actions</h3>
+                        <br/>
+                        <h4 id="managerviewemployees">View Employees</h4>
+                        <h4 id="manageraddemployee">Add Employee</h4>
+                        <h4 id="managerviewmessages">View Messages</h4>
+                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                    </div>
+                </div>
+                <div class="col-md-8 mainbody">
+                    <h3 class="mainbodyHeading center">Account Information</h3>
+                    <h4>Email:
+                        <h4 id="managerinformationemailinner" class="tabbed">test@test.com</h4>
+                    </h4>
+                    <h4>Username:
+                        <h4 id="managerinformationusernameinner" class="tabbed">Manager</h4>
+                    </h4>
+                    <h4>Workplace:
+                        <h4 id="managerinformationworkplaceinner" class="tabbed">dCC</h4>
+                    </h4>
+                    <h4>Employees:</h4>
+                    <ul id="managerinformationemployees"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- EMPLOYEE ACCOUNT INFORMATION -->
+    <!-- MESSAGING -->
     <div hidden id="messaging">
         <div class="container">
             <div class="row">
