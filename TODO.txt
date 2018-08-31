@@ -1,0 +1,11 @@
+TODO List:
+    1.) Queries:
+            Get All Users
+            Get All Groups
+            Get All Messages
+
+    2.) Who To Send Message To
+
+    3.) Delete User On Disconnect
+
+    4.) Incomming Message Handling

@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron');
 var loggedInUser;
+var userWorkplace;
 var database;
 var auth;
 
@@ -40,7 +41,7 @@ seed.addEventListener('click', function(e){
                     admin: {
                         Uid: 'bnSrtEyDtHW1z7fxaQy1sMvPCQr2',
                         Username: 'admin',
-                        Groups: {},
+                        Groups: ['test'],
                         Messages: {}
                     },
                     dylan: {
@@ -66,8 +67,6 @@ seed.addEventListener('click', function(e){
     database.ref().set(data);
 });
 
-
-
 // Login
 loginBtn.addEventListener('click', function(e){
     e.preventDefault();
@@ -75,8 +74,10 @@ loginBtn.addEventListener('click', function(e){
         auth.signInWithEmailAndPassword(email.value, password.value)
         .then(function(result){
             loggedInUser = result.user.uid;
+            userWorkplace = workplace.value;
             changePage();
             clearLoginForm();
+            OnLogin();
         })
         .catch(function(err){
             if(err != null){
@@ -97,8 +98,10 @@ registerBtn.addEventListener('click', function(e){
         auth.createUserWithEmailAndPassword(email.value, password.value)
         .then(function(result){
             loggedInUser = result.user.uid;
+            userWorkplace = workplace.value;
             changePage();
             clearLoginForm();
+            OnLogin();
         })
         .catch(function(err){
             if(err != null){
@@ -148,26 +151,44 @@ var groupMemberText = document.getElementById('newGroupMembers');
 
 
 // On Login
-ipcRenderer.send('users:getallusers', loggedInUser);
-ipcRenderer.on('users:allusers', function(allUsers){
-    for(var user of allUsers){
-        appendUser(user);
-    }
-});
+function OnLogin(){
+    GetAllUsers();
+    GetAllGroups();
+    GetAllMessages();
+}
 
-ipcRenderer.send('groups:getallgroups', loggedInUser);
-ipcRenderer.on('groups:allgroups', function(allGroups){
-    for(var group of allGroups){
-        appendGroup(group);
+async function GetAllUsers(){
+    var username = await FindUserNameByUID();
+    var ref = database.ref('Workplaces/' + userWorkplace + '/Users');
+    var snapshot = await ref.once('value', function(data){});
+    var usersInWorkplace = snapshot.val();
+    var foundUsers = [];
+    for(var prop in usersInWorkplace){
+        if(prop != username){
+            foundUsers.push(prop);
+        }
     }
-});
+    for(let i = 0; i < foundUsers.length; i++){
+        appendUser(foundUsers[i]);
+    }
+}
 
-ipcRenderer.send('messages:getallmessages', loggedInUser);
-ipcRenderer.on('messages:allmessages', function(allMessages){
-    for(var message of allMessages){
-        appendMessage(message);
+async function GetAllGroups(){
+    var username = await FindUserNameByUID();
+    var ref = database.ref('Workplaces/' + userWorkplace + '/Users/' + username);
+    var snapshot = await ref.once('value', function(data){});
+    var userObj = snapshot.val();
+    if(userObj.Groups){
+        for(let i = 0; i < userObj.Groups.length; i++){
+            appendGroup(userObj.Groups[i]);
+        }
     }
-});
+}
+
+function GetAllMessages(){
+    //var username = FindUserNameByUID();
+
+}
 
 // On User Connection and Disconnection
 ipcRenderer.on('user:userconnected', function(username){
@@ -185,7 +206,6 @@ ipcRenderer.on('group:newgroup' + loggedInUser, function(newGroupName){
 
 addGroup.addEventListener('click', function(e){
     e.preventDefault();
-    findUsers(groupMemberText);
     ipcRenderer.send('group:newgroupadded', groupName, groupMembers);
     groupName.value = "";
 });
@@ -223,6 +243,9 @@ function appendGroup(groupName){
     var text = document.createTextNode(groupName);
     groupDiv.appendChild(text);
     groups.appendChild(groupDiv);
+    groupDiv.addEventListener('click', function(e){
+        console.log(text);
+    });
 }
 
 ipcRenderer.on('logout', function(){
@@ -239,10 +262,20 @@ ipcRenderer.on('logout', function(){
 
 function signOutProcedure(){
     loggedInUser = null;
+    userWorkplace = null;
     changePage();
 }
 
-function findUsers(usernames){
-
-
+async function FindUserNameByUID(){
+    var ref = database.ref('Workplaces/' + userWorkplace);
+    var foundUser;
+    var snapshot = await ref.once('value', function(data){});
+    var usersInWorkplace = snapshot.val().Users;
+    for(var user in usersInWorkplace){
+        if(loggedInUser === usersInWorkplace[user].Uid){
+            foundUser =  usersInWorkplace[user].Username;
+            break;
+        }
+    }
+    return foundUser;
 }

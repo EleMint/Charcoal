@@ -43,6 +43,7 @@ const charcoalMenuTemplate = [
                 label: 'Quit',
                 accelerator: 'Ctrl+Q',
                 click(){
+                    ipcMain.emit('logout');
                     app.quit();
                 }
             }
