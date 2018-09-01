@@ -54,6 +54,7 @@ const charcoalMenuTemplate = [
         submenu: [
             {
                 label: 'Dev Tools',
+                accelerator: 'Ctrl+D',
                 click(){
                     charcoalWindow.toggleDevTools();
                 }
