@@ -10,13 +10,13 @@
 
 <body>
     <!--A LOGIN -->
-    <div hidden id="login">
+    <div id="login">
         <div class="container">
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <h2 class="center">Welcome To Charcoal</h2>
-                    <!--  -->
+                    <!-- TODO: REMOVE THIS BEFORE PRESENTING -->
                     <input type="button" id="seed" value="seed">
                     <!--  -->
                 </div>
@@ -28,22 +28,22 @@
                 <div class="col-md-6">
                     <form>
                         <div class="form-group">
-                            <label for="emailInput">Email Address</label>
-                            <input autofocus type="text" id="emailInput" placeholder="Email" class="form-control">
+                            <label for="loginEmailField">Email Address</label>
+                            <input autofocus type="text" id="loginEmailField" placeholder="Email" class="form-control">
 
-                            <label for="usernameInput">Username</label>
-                            <input type="text" id="usernameInput" placeholder="Username" class="form-control">
+                            <label for="loginUsernameField">Username</label>
+                            <input type="text" id="loginUsernameField" placeholder="Username" class="form-control">
 
-                            <label for="passwordInput">Password</label>
-                            <input type="password" id="passwordInput" placeholder="Password" class="form-control">
+                            <label for="loginPasswordField">Password</label>
+                            <input type="password" id="loginPasswordField" placeholder="Password" class="form-control">
 
-                            <label for="workplaceInput">Workplace</label>
-                            <input type="text" id="workplaceInput" placeholder="Workplace" class="form-control">
+                            <label for="loginWorkplaceField">Workplace</label>
+                            <input type="text" id="loginWorkplaceField" placeholder="Workplace" class="form-control">
                         </div>
                         <div class="center">
                             <input type="button" id="loginBtn" class="btn btn-primary" value="Login" style="width:150px;">
                             <input type="button" id="registerBtn" class="btn btn-secondary" value="Register" style="width:150px;">
-                            <p id="nogoText" hidden style="color: red;">Invalid Login or Registration Attempt</p>
+                            <p id="loginNogoText" hidden style="color: red;">Invalid Login or Registration Attempt</p>
                         </div>
                     </form>
                 </div>
@@ -63,12 +63,12 @@
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="ownerviewmanagers">View Managers</h4>
-                        <h4 id="owneraddmanager">Add Manager</h4>
-                        <h4 id="ownerviewemployees">View Employees</h4>
-                        <h4 id="owneraddemployee">Add Employee</h4>
-                        <h4 id="ownerviewmessages">View Messages</h4>
-                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                        <h4 id="ownerviewmanagershomepage">View Managers</h4>
+                        <h4 id="owneraddmanagerhomepage">Add Manager</h4>
+                        <h4 id="ownerviewemployeeshomepage">View Employees</h4>
+                        <h4 id="owneraddemployeehomepage">Add Employee</h4>
+                        <h4 id="ownerviewmessageshomepage">View Messages</h4>
+                        <h4 id="ownergotomessengerhomepage">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody center">
@@ -86,7 +86,7 @@
         </div>
     </div>
     <!-- OWNER CREATE MANAGER -->
-    <div id="ownercreatemanager">
+    <div hidden id="ownercreatemanager">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 sidebar">

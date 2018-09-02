@@ -5,19 +5,18 @@ var userRole;
 var database;
 var auth;
 
-// Login();
-OwnerHomePage();
+Login();
 
 // Login //////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function Login() {
-    var email = document.getElementById('emailInput');
-    var username = document.getElementById('usernameInput');
-    var password = document.getElementById('passwordInput');
-    var workplace = document.getElementById('workplaceInput');
+    var email = document.getElementById('loginEmailField');
+    var username = document.getElementById('loginUsernameField');
+    var password = document.getElementById('loginPasswordField');
+    var workplace = document.getElementById('loginWorkplaceField');
     var loginBtn = document.getElementById('loginBtn');
     var registerBtn = document.getElementById('registerBtn');
-    var nogoText = document.getElementById('nogoText');
+    var loginNogoText = document.getElementById('loginNogoText');
 
 
     // Initialize Firebase
@@ -36,7 +35,7 @@ function Login() {
         auth = firebase.auth();
     });
 
-    // Database Seeding
+    // TODO: REMOVE DATABASE SEEDING
     var seed = document.getElementById('seed');
     seed.addEventListener('click', function (e) {
         e.preventDefault();
@@ -98,13 +97,12 @@ function Login() {
         e.preventDefault();
         if (email.value != '' && username.value != '' && password.value != '' && workplace.value != '') {
             auth.signInWithEmailAndPassword(email.value, password.value)
-                .then(function (result) {
+                .then(async function (result) {
                     loggedInUser = result.user.uid;
                     userWorkplace = workplace.value;
-                    userRole = FindUserRole(loggedInUser);
-                    changePage();
+                    userRole = await FindUserRole();
+                    RedirectFromLogin();
                     clearLoginForm();
-                    OnLogin();
                 })
                 .catch(function (err) {
                     if (err != null) {
@@ -128,7 +126,6 @@ function Login() {
                     userWorkplace = workplace.value;
                     changePage();
                     clearLoginForm();
-                    OnLogin();
                 })
                 .catch(function (err) {
                     if (err != null) {
@@ -150,36 +147,55 @@ function Login() {
     }
 
     function nogo() {
-        nogoText.hidden = false;
+        loginNogoText.hidden = false;
     }
 
-    function changePage() {
-        var loginDiv = document.getElementById('login');
-        var messagingDiv = document.getElementById('messaging');
-        if (loginDiv.hidden === true) {
-            loginDiv.hidden = false;
-            messagingDiv.hidden = true;
+    function RedirectFromLogin(){
+        console.log(userRole);
+        if(userRole == 'owner'){
+            Redirect('ownerhomepage');
+        } else if(userRole == 'manager'){
+            Redirect('managerhomepage');
         } else {
-            loginDiv.hidden = true;
-            messagingDiv.hidden = false;
+            Redirect('messaging');
         }
     }
 
-    async function FindUserRole(uid) {
+    async function FindUserRole() {
+        var newUserRole;
+        var ownerref = database.ref('Workplaces/' + workplace.value + '/Owner/Account');
+        var ownersnapshot = await ownerref.once('value', function (data) { });
+        var owner = ownersnapshot.val();
+        if (loggedInUser == owner.Uid) {
+            newUserRole = 'owner';
+        } else {
+            var managersref = database.ref('Workplaces/' + workplace.value + '/Managers');
+            var managerssnapshot = await managersref.once('value', function (data) { });
+            var managers = managerssnapshot.val();
+            for (var manager in managers) {
+                if (managers[manager].Account.Uid == loggedInUser) {
+                    newUserRole = 'manager';
+                } else {
+                    newUserRole = 'employee';
+                }
+            }
+        }
+        console.log(newUserRole);
+        return newUserRole;
     }
 }
 // Owner Home Page ////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function OwnerHomePage() {
-    document.title = "Home Page";
+    document.title = "Home Page test";
     var usernameBoxUsername = document.getElementById('usernameBoxUsername');
     var signOutBtn = document.getElementById('signout');
-    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
-    var owneraddmanager = document.getElementById('owneraddmanager');
-    var ownerviewemployees = document.getElementById('ownerviewemployees');
-    var owneraddemployee = document.getElementById('owneraddemployee');
-    var ownerviewmessages = document.getElementById('ownerviewmessages');
-    var ownergototmessenger = document.getElementById('ownergotomessenger');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagershomepage');
+    var owneraddmanager = document.getElementById('owneraddmanagerhomepage');
+    var ownerviewemployees = document.getElementById('ownerviewemployeeshomepage');
+    var owneraddemployee = document.getElementById('owneraddemployeehomepage');
+    var ownerviewmessages = document.getElementById('ownerviewmessageshomepage');
+    var ownergototmessenger = document.getElementById('ownergotomessengerhomepage');
 
     usernameBoxUsername.addEventListener('click', function (e) {
         e.preventDefault();
@@ -227,15 +243,15 @@ function OwnerCreateManager() {
     document.title = "Add Manager";
     var usernameBoxUsername = document.getElementById('usernameBoxUsername');
     var signOutBtn = document.getElementById('signout');
-    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
-    var ownerviewemployees = document.getElementById('ownerviewemployees');
-    var owneraddemployee = document.getElementById('owneraddemployee');
-    var ownerviewmessages = document.getElementById('ownerviewmessages');
-    var ownergototmessenger = document.getElementById('ownergotomessenger');
-    var createManagerBtn = document.getElementById('createmanager');
-    var emailField = documnt.getElementById('createmanageremail');
-    var passwordField = document.getElementById('createmanagerpassword');
-    var usernameField = document.getElementById('createmanagerusername');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagerscreatemanager');
+    var ownerviewemployees = document.getElementById('ownerviewemployeescreatemanager');
+    var owneraddemployee = document.getElementById('owneraddemployeecreatemanager');
+    var ownerviewmessages = document.getElementById('ownerviewmessagescreatemanager');
+    var ownergototmessenger = document.getElementById('ownergotomessengercreatemanager');
+    var createManagerBtn = document.getElementById('createmanagercreatemanager');
+    var emailField = documnt.getElementById('createmanageremailcreatemanager');
+    var passwordField = document.getElementById('createmanagerpasswordcreatemanager');
+    var usernameField = document.getElementById('createmanagerusernamecreatemanager');
 
     usernameBoxUsername.addEventListener('click', function (e) {
         e.preventDefault();
@@ -386,19 +402,150 @@ function OwnerCreateEmployee() {
 // Owner View Employees //////////////////////////////////
 ///////////////////////////////////////////////////////////
 function OwnerViewEmployees() {
+    document.title = "Employees";
+    var usernameBoxUsername = document.getElementById('usernameBoxUsername');
+    var signOutBtn = document.getElementById('signout');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
+    var owneraddmanager = document.getElementById('owneraddmanager');
+    var owneraddemployee = document.getElementById('owneraddemployee');
+    var ownerviewmessages = document.getElementById('ownerviewmessages');
+    var ownergototmessenger = document.getElementById('ownergotomessenger');
 
+    usernameBoxUsername.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('owneraccountinformation');
+    });
+
+    signOutBtn.addEventListener('click', function (e) {
+        SignOut();
+    });
+
+    ownerviewmanagers.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewmanagers');
+    });
+
+    owneraddmanager.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownercreatemanager');
+    });
+
+    owneraddemployee.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('owneraddemployee');
+    });
+
+    ownerviewmessages.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewmessages');
+    });
+
+    ownergototmessenger.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('messaging')
+    });
+
+    // TODO: SHOW EMPLOYEES
 }
 
 // Owner Account Information //////////////////////////////
 ///////////////////////////////////////////////////////////
 function OwnerAccountInformation() {
+    document.title = "Account Information";
+    var signOutBtn = document.getElementById('signout');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
+    var owneraddmanager = document.getElementById('owneraddmanager');
+    var ownerviewemployees = document.getElementById('ownerviewemployees');
+    var owneraddemployee = document.getElementById('owneraddemployee');
+    var ownerviewmessages = document.getElementById('ownerviewmessages');
+    var ownergototmessenger = document.getElementById('ownergotomessenger');
 
+    signOutBtn.addEventListener('click', function (e) {
+        SignOut();
+    });
+
+    ownerviewmanagers.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewmanagers');
+    });
+
+    owneraddmanager.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownercreatemanager');
+    });
+
+    ownerviewemployees.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewemployees');
+    });
+
+    owneraddemployee.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('owneraddemployee');
+    });
+
+    ownerviewmessages.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewmessages');
+    });
+
+    ownergototmessenger.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('messaging')
+    });
 }
 
 // Owner View Messages ////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function OwnerViewMessages() {
+    document.title = "Home Page";
+    var usernameBoxUsername = document.getElementById('usernameBoxUsername');
+    var signOutBtn = document.getElementById('signout');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
+    var owneraddmanager = document.getElementById('owneraddmanager');
+    var ownerviewemployees = document.getElementById('ownerviewemployees');
+    var owneraddemployee = document.getElementById('owneraddemployee');
+    var ownerviewmessages = document.getElementById('ownerviewmessages');
+    var ownergototmessenger = document.getElementById('ownergotomessenger');
 
+    usernameBoxUsername.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('owneraccountinformation');
+    });
+
+    signOutBtn.addEventListener('click', function (e) {
+        SignOut();
+    });
+
+    ownerviewmanagers.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewmanagers');
+    });
+
+    owneraddmanager.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownercreatemanager');
+    });
+
+    ownerviewemployees.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewemployees');
+    });
+
+    owneraddemployee.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('owneraddemployee');
+    });
+
+    ownerviewmessages.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('ownerviewmessages');
+    });
+
+    ownergototmessenger.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('messaging')
+    });
 }
 
 // Manager Home Page //////////////////////////////////////
@@ -449,15 +596,6 @@ function Messaging() {
     var groupName = document.getElementById('newGroupText');
     var groupMemberText = document.getElementById('newGroupMembers');
     var currentGroupName = username.value;
-
-
-    // On Login
-    function OnLogin() {
-        GetAllUsers();
-        GetAllGroups();
-        GetAllMessages();
-        FindMessagesByGroupName(currentGroupName);
-    }
 
     async function GetAllUsers() {
         var username = await FindUserNameByUID(userWorkplace);
