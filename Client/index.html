@@ -18,11 +18,6 @@
                     <h2 class="center">Welcome To Charcoal</h2>
                     <!--  -->
                     <input type="button" id="seed" value="seed">
-                    <div id="role" class="center">
-                        <input type="radio" name="role" id="owner" value="owner"> Owner
-                        <input type="radio" name="role" id="manager" value="manager"> Manager
-                        <input type="radio" name="role" id="employee" value="employee"> Employee
-                    </div>
                     <!--  -->
                 </div>
                 <div class="col-md-3"></div>
@@ -62,7 +57,7 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
+                        <p class="usernameBoxUsername" id="usernameBoxUsername">Username</p>
                         <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
@@ -91,7 +86,7 @@
         </div>
     </div>
     <!-- OWNER CREATE MANAGER -->
-    <div hidden id="ownercreatemanager">
+    <div id="ownercreatemanager">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 sidebar">
@@ -371,7 +366,7 @@
         </div>
     </div>
     <!-- EMPLOYEE ACCOUNT INFORMATION -->
-    <div id="employeeaccountinformation">
+    <div hidden id="employeeaccountinformation">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 sidebar">
@@ -429,6 +424,7 @@
             </div>
         </div>
     </div>
+
     <script src="./renderer.js"></script>
 </body>
 </html>

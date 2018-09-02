@@ -2,10 +2,18 @@
     text-align: center;
 }
 
+h4:hover{
+    cursor: pointer;
+}
+
 .usernameBox{
     margin: 0px, 0px, 0px, 0px;
     padding: 0px, 0px, 0px, 0px;
     border-bottom: 2px solid grey;
+}
+
+.usernameBoxUsername:hover{
+    cursor: pointer;
 }
 .usernameBoxusername{
     display: inline;
