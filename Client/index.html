@@ -17,7 +17,7 @@
                 <div class="col-md-6">
                     <h2 class="center">Welcome To Charcoal</h2>
                     <!-- TODO: REMOVE THIS BEFORE PRESENTING -->
-                    <input type="button" id="seed" value="seed">
+                    <!-- <input type="button" id="seed" value="seed"> -->
                     <!--  -->
                 </div>
                 <div class="col-md-3"></div>
@@ -29,16 +29,16 @@
                     <form>
                         <div class="form-group">
                             <label for="loginEmailField">Email Address</label>
-                            <input autofocus type="text" id="loginEmailField" placeholder="Email" class="form-control">
+                            <input autofocus type="text" value="owner@owner.com" id="loginEmailField" placeholder="Email" class="form-control">
 
                             <label for="loginUsernameField">Username</label>
-                            <input type="text" id="loginUsernameField" placeholder="Username" class="form-control">
+                            <input type="text" id="loginUsernameField" value="owner" placeholder="Username" class="form-control">
 
                             <label for="loginPasswordField">Password</label>
-                            <input type="password" id="loginPasswordField" placeholder="Password" class="form-control">
+                            <input type="password" id="loginPasswordField" value="password" placeholder="Password" class="form-control">
 
                             <label for="loginWorkplaceField">Workplace</label>
-                            <input type="text" id="loginWorkplaceField" placeholder="Workplace" class="form-control">
+                            <input type="text" id="loginWorkplaceField" value="dCC" placeholder="Workplace" class="form-control">
                         </div>
                         <div class="center">
                             <input type="button" id="loginBtn" class="btn btn-primary" value="Login" style="width:150px;">
@@ -51,24 +51,28 @@
             </div>
         </div>
     </div>
+    <!-- OWNER WORKPLACE MENU PAGE -->
+    <div hidden id="ownerworkplacemenu">
+
+    </div>
     <!-- OWNER HOME PAGE -->
     <div hidden id="ownerhomepage">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p class="usernameBoxUsername" id="usernameBoxUsername">Username</p>
-                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                        <p class="usernameBoxUsername cursor" id="usernameBoxUsernameownerhomepage">Username</p>
+                        <input id="signoutownerhomepage" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="ownerviewmanagershomepage">View Managers</h4>
-                        <h4 id="owneraddmanagerhomepage">Add Manager</h4>
-                        <h4 id="ownerviewemployeeshomepage">View Employees</h4>
-                        <h4 id="owneraddemployeehomepage">Add Employee</h4>
-                        <h4 id="ownerviewmessageshomepage">View Messages</h4>
-                        <h4 id="ownergotomessengerhomepage">Go To Messenger</h4>
+                        <h4 class="cursor" id="ownerviewmanagershomepage">View Managers</h4>
+                        <h4 class="cursor" id="owneraddmanagerhomepage">Add Manager</h4>
+                        <h4 class="cursor" id="ownerviewemployeeshomepage">View Employees</h4>
+                        <h4 class="cursor" id="owneraddemployeehomepage">Add Employee</h4>
+                        <h4 class="cursor" id="ownerviewmessageshomepage">View Messages</h4>
+                        <h4 class="cursor" id="ownergotomessengerhomepage">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody center">
@@ -91,18 +95,18 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
-                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                        <p class="cursor" id="usernameBoxUsernameownercreatemanager">Username</p>
+                        <input id="signoutownercreatemanager" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="ownerviewmanagers">View Managers</h4>
-                        <h4 id="owneraddmanager" class="selected">Add Manager</h4>
-                        <h4 id="ownerviewemployees">View Employees</h4>
-                        <h4 id="owneraddemployee">Add Employee</h4>
-                        <h4 id="ownerviewmessages">View Messages</h4>
-                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="ownerviewmanagerscreatemanager">View Managers</h4>
+                        <h4 class="cursor" id="owneraddmanagercreatemanager" class="selected">Add Manager</h4>
+                        <h4 class="cursor" id="ownerviewemployeescreatemanager">View Employees</h4>
+                        <h4 class="cursor" id="owneraddemployeecreatemanager">Add Employee</h4>
+                        <h4 class="cursor" id="ownerviewmessagescreatemanager">View Messages</h4>
+                        <h4 class="cursor" id="ownergotomessengercreatemanager">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody">
@@ -110,17 +114,18 @@
                     <br/>
                     <form>
                         <div class="form-group">
-                            <label for="createmanageremail">Email Address</label>
-                            <input type="text" id="createmanageremail" placeholder="Email" class="form-control">
+                            <label for="ownercreatemanageremail">Email Address</label>
+                            <input type="text" id="ownercreatemanageremail" placeholder="Email" class="form-control">
 
-                            <label for="createmanagerusername">Username</label>
-                            <input type="text" id="createmanagerusername" placeholder="Username" class="form-control">
+                            <label for="ownercreatemanagerusername">Username</label>
+                            <input type="text" id="ownercreatemanagerusername" placeholder="Username" class="form-control">
 
-                            <label for="createmanagerpassword">Password</label>
-                            <input type="password" id="createmanagerpassword" placeholder="Password" class="form-control">
+                            <label for="ownercreatemanagerpassword">Password</label>
+                            <input type="password" id="ownercreatemanagerpassword" placeholder="Password" class="form-control">
                         </div>
                         <div class="center">
-                            <input type="button" id="createmanager" class="btn btn-primary" value="Add" style="width:150px;">
+                            <input type="button" id="ownercreatemanagerBtn" class="btn btn-primary" value="Add" style="width:150px;">
+                            <p id="ownernewmanagerNogoText" hidden style="color: red;">Invalid Registration Attempt</p>
                         </div>
                     </form>
                 </div>
@@ -133,18 +138,18 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
-                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                        <p class="cursor" id="usernameBoxUsernameownercreateemployee">Username</p>
+                        <input id="signoutownercreateemployee" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="ownerviewmanagers">View Managers</h4>
-                        <h4 id="owneraddmanager">Add Manager</h4>
-                        <h4 id="ownerviewemployees">View Employees</h4>
-                        <h4 id="owneraddemployee" class="selected">Add Employee</h4>
-                        <h4 id="ownerviewmessages">View Messages</h4>
-                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="ownerviewmanagerscreateemployee">View Managers</h4>
+                        <h4 class="cursor" id="owneraddmanagercreateemployee">Add Manager</h4>
+                        <h4 class="cursor" id="ownerviewemployeescreateemployee">View Employees</h4>
+                        <h4 class="cursor" id="owneraddemployeecreateemployee" class="selected">Add Employee</h4>
+                        <h4 class="cursor" id="ownerviewmessagescreateemployee">View Messages</h4>
+                        <h4 class="cursor" id="ownergotomessengercreateemployee">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody">
@@ -152,22 +157,34 @@
                     <br/>
                     <form>
                         <div class="form-group">
-                            <label for="createemployeeemail">Email Address</label>
-                            <input type="text" id="createemployeeemail" placeholder="Email" class="form-control">
+                            <label for="createemployeeemailownercreateemployee">Email Address</label>
+                            <input type="text" id="createemployeeemailownercreateemployee" placeholder="Email" class="form-control">
 
-                            <label for="createemployeeusername">Username</label>
-                            <input type="text" id="createemployeeusername" placeholder="Username" class="form-control">
+                            <label for="createemployeeusernameownercreateemployee">Username</label>
+                            <input type="text" id="createemployeeusernameownercreateemployee" placeholder="Username" class="form-control">
 
-                            <label for="createemployeepassword">Password</label>
-                            <input type="password" id="createemployeepassword" placeholder="Password" class="form-control">
+                            <label for="createemployeepasswordownercreateemployee">Password</label>
+                            <input type="password" id="createemployeepasswordownercreateemployee" placeholder="Password" class="form-control">
+
+                            <label for="createemployeemanagerownercreateemployee">Manager Username</label>
+                            <input type="text" id="createemployeemanagerownercreateemployee" placeholder="Manager Username" class="form-control">
                         </div>
                         <div class="center">
-                            <input type="button" id="createemployee" class="btn btn-primary" value="Add" style="width:150px;">
+                            <input type="button" id="createemployeeownercreateemployee" class="btn btn-primary" value="Add" style="width:150px;">
+                            <p id="ownernewemployeeNogoText" hidden style="color: red;">Invalid Registration Attempt</p>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- OWNER VIEW MANAGERS -->
+    <div hidden id="ownerviewmanagers">
+
+    </div>
+    <!-- OWNER VIEW EMPLOYEES -->
+    <div hidden id="ownerviewemployees">
+
     </div>
     <!-- OWNER ACCOUNT INFORMATION -->
     <div hidden id="owneraccountinformation">
@@ -175,18 +192,18 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
-                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                        <p class="cursor" id="usernameBoxUsernameowneraccountinformation">Username</p>
+                        <input id="signoutowneraccountinformation" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="ownerviewmanagers">View Managers</h4>
-                        <h4 id="owneraddmanager">Add Manager</h4>
-                        <h4 id="ownerviewemployees">View Employees</h4>
-                        <h4 id="owneraddemployee">Add Employee</h4>
-                        <h4 id="ownerviewmessages">View Messages</h4>
-                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="ownerviewmanagersaccountinformation">View Managers</h4>
+                        <h4 class="cursor" id="owneraddmanageraccountinformation">Add Manager</h4>
+                        <h4 class="cursor" id="ownerviewemployeesaccountinformation">View Employees</h4>
+                        <h4 class="cursor" id="owneraddemployeeaccountinformation">Add Employee</h4>
+                        <h4 class="cursor" id="ownerviewmessagesaccountinformation">View Messages</h4>
+                        <h4 class="cursor" id="ownergotomessengeraccountinformation">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody">
@@ -214,18 +231,18 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
-                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                        <p class="cursor" id="usernameBoxUsernameownerviewmessages">Username</p>
+                        <input id="signoutownerviewmessages" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="ownerviewmanagers">View Managers</h4>
-                        <h4 id="owneraddmanager">Add Manager</h4>
-                        <h4 id="ownerviewemployees">View Employees</h4>
-                        <h4 id="owneraddemployee">Add Employee</h4>
-                        <h4 id="ownerviewmessages" class="selected">View Messages</h4>
-                        <h4 id="ownergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="ownerviewmanagersviewmessages">View Managers</h4>
+                        <h4 class="cursor" id="owneraddmanagerviewmessages">Add Manager</h4>
+                        <h4 class="cursor" id="ownerviewemployeesviewmessages">View Employees</h4>
+                        <h4 class="cursor" id="owneraddemployeeviewmessages">Add Employee</h4>
+                        <h4 class="cursor" id="ownerviewmessagesviewmessages" class="selected">View Messages</h4>
+                        <h4 class="cursor" id="ownergotomessengerviewmessages">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody center">
@@ -240,16 +257,16 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
-                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                        <p class="cursor" id="usernameBoxUsernamemanagerhomepage">Username</p>
+                        <input id="signoutmanagerhomepage" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="managerviewemployees">View Employees</h4>
-                        <h4 id="manageraddemployee">Add Employee</h4>
-                        <h4 id="managerviewmessages">View Messages</h4>
-                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="managerviewemployeeshomepage">View Employees</h4>
+                        <h4 class="cursor" id="manageraddemployeehomepage">Add Employee</h4>
+                        <h4 class="cursor" id="managerviewmessageshomepage">View Messages</h4>
+                        <h4 class="cursor" id="managergotomessengerhomepage">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody center">
@@ -272,16 +289,16 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
-                        <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
+                        <p class="cursor" id="usernameBoxUsernamemanagercreateemployee">Username</p>
+                        <input id="signoutmanagercreateemployee" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="managerviewemployees">View Employees</h4>
-                        <h4 id="manageraddemployee" class="selected">Add Employee</h4>
-                        <h4 id="managerviewmessages">View Messages</h4>
-                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="managerviewemployeescreateemployee">View Employees</h4>
+                        <h4 class="cursor" id="manageraddemployeecreateemployee" class="selected">Add Employee</h4>
+                        <h4 class="cursor" id="managerviewmessagescreateemployee">View Messages</h4>
+                        <h4 class="cursor" id="managergotomessengercreateemployee">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody">
@@ -289,17 +306,18 @@
                     <br/>
                     <form>
                         <div class="form-group">
-                            <label for="createemployeeemail">Email Address</label>
-                            <input type="text" id="createemployeeemail" placeholder="Email" class="form-control">
+                            <label for="createemployeeemailmanagercreateemployee">Email Address</label>
+                            <input type="text" id="createemployeeemailmanagercreateemployee" placeholder="Email" class="form-control">
 
-                            <label for="createemployeeusername">Username</label>
-                            <input type="text" id="createemployeeusername" placeholder="Username" class="form-control">
+                            <label for="createemployeeusernamemanagercreateemployee">Username</label>
+                            <input type="text" id="createemployeeusernamemanagercreateemployee" placeholder="Username" class="form-control">
 
-                            <label for="createemployeepassword">Password</label>
-                            <input type="password" id="createemployeepassword" placeholder="Password" class="form-control">
+                            <label for="createemployeepasswordmanagercreateemployee">Password</label>
+                            <input type="password" id="createemployeepasswordmanagercreateemployee" placeholder="Password" class="form-control">
                         </div>
                         <div class="center">
-                            <input type="button" id="createemployee" class="btn btn-primary" value="Add" style="width:150px;">
+                            <input type="button" id="createemployeemanagercreateemployee" class="btn btn-primary" value="Add" style="width:150px;">
+                            <p id="managernewemployeeNogoText" hidden style="color: red;">Invalid Registration Attempt</p>
                         </div>
                     </form>
                 </div>
@@ -312,16 +330,16 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
+                        <p class="cursor" id="usernameBoxUsername">Username</p>
                         <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="managerviewemployees">View Employees</h4>
-                        <h4 id="manageraddemployee">Add Employee</h4>
-                        <h4 id="managerviewmessages" class="selected">View Messages</h4>
-                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="managerviewemployees">View Employees</h4>
+                        <h4 class="cursor" id="manageraddemployee">Add Employee</h4>
+                        <h4 class="cursor" id="managerviewmessages" class="selected">View Messages</h4>
+                        <h4 class="cursor" id="managergotomessenger">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody center">
@@ -336,16 +354,16 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
+                        <p class="cursor" id="usernameBoxUsername">Username</p>
                         <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="managerviewemployees">View Employees</h4>
-                        <h4 id="manageraddemployee">Add Employee</h4>
-                        <h4 id="managerviewmessages">View Messages</h4>
-                        <h4 id="managergotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="managerviewemployees">View Employees</h4>
+                        <h4 class="cursor" id="manageraddemployee">Add Employee</h4>
+                        <h4 class="cursor" id="managerviewmessages">View Messages</h4>
+                        <h4 class="cursor" id="managergotomessenger">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody">
@@ -371,13 +389,13 @@
             <div class="row">
                 <div class="col-md-4 sidebar">
                     <div class="usernameBox">
-                        <p id="usernameBoxUsername">Username</p>
+                        <p class="cursor" id="usernameBoxUsername">Username</p>
                         <input id="signout" class="btn btn-sm btn-primary sidebarbtn" type="button" value="Sign Out">
                     </div>
                     <div class="actions center">
                         <h3 class="sidebarHeading">Actions</h3>
                         <br/>
-                        <h4 id="employeegotomessenger">Go To Messenger</h4>
+                        <h4 class="cursor" id="employeegotomessenger">Go To Messenger</h4>
                     </div>
                 </div>
                 <div class="col-md-8 mainbody">
@@ -427,4 +445,5 @@
 
     <script src="./renderer.js"></script>
 </body>
+
 </html>

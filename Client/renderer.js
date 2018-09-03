@@ -1,12 +1,13 @@
 const { ipcRenderer } = require('electron');
 var loggedInUser;
+var loggedInUsername;
+var loggedInEmail;
 var userWorkplace;
 var userRole;
 var database;
 var auth;
 
 Login();
-
 // Login //////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function Login() {
@@ -36,61 +37,61 @@ function Login() {
     });
 
     // TODO: REMOVE DATABASE SEEDING
-    var seed = document.getElementById('seed');
-    seed.addEventListener('click', function (e) {
-        e.preventDefault();
-        var data = {
-            Workplaces: {
-                dCC: {
-                    Owner: {
-                        Account: {
-                            Uid: 'f0febOyyUXg7cyrKa4d9J3qE2Hw1',
-                            Username: 'owner',
-                            Groups: [],
-                            Messages: []
-                        }
-                    },
-                    Managers: {
-                        Manager1: {
-                            Account: {
-                                Uid: 'elSGaiVBX2WrbBGYJGmm46hzvBr1',
-                                Username: 'manager1',
-                                Channels: [],
-                                Groups: [],
-                                Messages: []
+    // var seed = document.getElementById('seed');
+    // seed.addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     var data = {
+    //         Workplaces: {
+    //             dCC: {
+    //                 Owner: {
+    //                     Account: {
+    //                         Uid: 'f0febOyyUXg7cyrKa4d9J3qE2Hw1',
+    //                         Username: 'owner',
+    //                         Groups: [],
+    //                         Messages: []
+    //                     }
+    //                 },
+    //                 Managers: {
+    //                     Manager1: {
+    //                         Account: {
+    //                             Uid: 'elSGaiVBX2WrbBGYJGmm46hzvBr1',
+    //                             Username: 'manager1',
+    //                             Channels: [],
+    //                             Groups: [],
+    //                             Messages: []
 
-                            },
-                            Users: {
-                                admin: {
-                                    Uid: 'bnSrtEyDtHW1z7fxaQy1sMvPCQr2',
-                                    Username: 'admin',
-                                    Groups: ['test'],
-                                    Messages: []
-                                },
-                                dylan: {
-                                    Uid: 'Xu1XZALsoNRO4LYP71vSOYrSev82',
-                                    Username: 'dylan',
-                                    Groups: ['test'],
-                                    Messages: ['timestamp']
-                                }
-                            }
-                        }
-                    },
-                    Messages: {
-                        timestamp: {
-                            messageBody: 'test message',
-                            messageFrom: 'dylan',
-                            messageTo: 'Group:test'
-                        }
-                    },
-                    Groups: {
-                        test: ['dylan', 'admin']
-                    }
-                }
-            }
-        };
-        database.ref().set(data);
-    });
+    //                         },
+    //                         Users: {
+    //                             admin: {
+    //                                 Uid: 'bnSrtEyDtHW1z7fxaQy1sMvPCQr2',
+    //                                 Username: 'admin',
+    //                                 Groups: ['test'],
+    //                                 Messages: []
+    //                             },
+    //                             dylan: {
+    //                                 Uid: 'Xu1XZALsoNRO4LYP71vSOYrSev82',
+    //                                 Username: 'dylan',
+    //                                 Groups: ['test'],
+    //                                 Messages: ['timestamp']
+    //                             }
+    //                         }
+    //                     }
+    //                 },
+    //                 Messages: {
+    //                     timestamp: {
+    //                         messageBody: 'test message',
+    //                         messageFrom: 'dylan',
+    //                         messageTo: 'Group:test'
+    //                     }
+    //                 },
+    //                 Groups: {
+    //                     test: ['dylan', 'admin']
+    //                 }
+    //             }
+    //         }
+    //     };
+    //     database.ref().set(data);
+    // });
 
     // Login
     loginBtn.addEventListener('click', function (e) {
@@ -101,6 +102,8 @@ function Login() {
                     loggedInUser = result.user.uid;
                     userWorkplace = workplace.value;
                     userRole = await FindUserRole();
+                    loggedInUsername = username.value;
+                    loggedInEmail = email.value;
                     RedirectFromLogin();
                     clearLoginForm();
                 })
@@ -150,14 +153,13 @@ function Login() {
         loginNogoText.hidden = false;
     }
 
-    function RedirectFromLogin(){
-        console.log(userRole);
-        if(userRole == 'owner'){
+    function RedirectFromLogin() {
+        if (userRole == 'owner') {
             Redirect('ownerhomepage');
-        } else if(userRole == 'manager'){
+        } else if (userRole == 'manager') {
             Redirect('managerhomepage');
         } else {
-            Redirect('messaging');
+            Redirect('employeeaccountinformation');
         }
     }
 
@@ -180,16 +182,23 @@ function Login() {
                 }
             }
         }
-        console.log(newUserRole);
         return newUserRole;
     }
 }
+
+// Owner Workplace Menu ///////////////////////////////////
+///////////////////////////////////////////////////////////
+function OwnerWorkplaceMenu() {
+    document.title = "Workplace Menu";
+}
+
 // Owner Home Page ////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function OwnerHomePage() {
-    document.title = "Home Page test";
-    var usernameBoxUsername = document.getElementById('usernameBoxUsername');
-    var signOutBtn = document.getElementById('signout');
+    document.title = "Home";
+    var usernameBoxUsername = document.getElementById('usernameBoxUsernameownerhomepage');
+    usernameBoxUsername.innerHTML = loggedInUsername;
+    var signOutBtn = document.getElementById('signoutownerhomepage');
     var ownerviewmanagers = document.getElementById('ownerviewmanagershomepage');
     var owneraddmanager = document.getElementById('owneraddmanagerhomepage');
     var ownerviewemployees = document.getElementById('ownerviewemployeeshomepage');
@@ -223,7 +232,7 @@ function OwnerHomePage() {
 
     owneraddemployee.addEventListener('click', function (e) {
         e.preventDefault();
-        Redirect('owneraddemployee');
+        Redirect('ownercreateemployee');
     });
 
     ownerviewmessages.addEventListener('click', function (e) {
@@ -241,17 +250,19 @@ function OwnerHomePage() {
 ///////////////////////////////////////////////////////////
 function OwnerCreateManager() {
     document.title = "Add Manager";
-    var usernameBoxUsername = document.getElementById('usernameBoxUsername');
-    var signOutBtn = document.getElementById('signout');
+    var usernameBoxUsername = document.getElementById('usernameBoxUsernameownercreatemanager');
+    usernameBoxUsername.innerHTML = loggedInUsername;
+    var signOutBtn = document.getElementById('signoutownercreatemanager');
     var ownerviewmanagers = document.getElementById('ownerviewmanagerscreatemanager');
     var ownerviewemployees = document.getElementById('ownerviewemployeescreatemanager');
     var owneraddemployee = document.getElementById('owneraddemployeecreatemanager');
     var ownerviewmessages = document.getElementById('ownerviewmessagescreatemanager');
     var ownergototmessenger = document.getElementById('ownergotomessengercreatemanager');
-    var createManagerBtn = document.getElementById('createmanagercreatemanager');
-    var emailField = documnt.getElementById('createmanageremailcreatemanager');
-    var passwordField = document.getElementById('createmanagerpasswordcreatemanager');
-    var usernameField = document.getElementById('createmanagerusernamecreatemanager');
+    var createManagerBtn = document.getElementById('ownercreatemanagerBtn');
+    var emailField = document.getElementById('ownercreatemanageremail');
+    var passwordField = document.getElementById('ownercreatemanagerpassword');
+    var usernameField = document.getElementById('ownercreatemanagerusername');
+    var NoGoText = document.getElementById('ownernewmanagerNogoText');
 
     usernameBoxUsername.addEventListener('click', function (e) {
         e.preventDefault();
@@ -291,13 +302,26 @@ function OwnerCreateManager() {
         e.preventDefault();
         auth.createUserWithEmailAndPassword(emailField.value, passwordField.value)
             .then(function (result) {
-                // TODO: Do Something With The Username and Workplace
+                var newmanagerref = database.ref('Workplaces/' + userWorkplace + '/Managers/' + usernameField.value);
+                var data = {
+                    Account: {
+                        Uid: result.user.uid,
+                        Username: usernameField.value
+                    },
+                    Users: {
+
+                    }
+                };
+                newmanagerref.set(data);
+                NoGoText.hidden = true;
                 Redirect('ownerviewmanagers');
             })
             .catch(function (err) {
                 if (err != null) {
-                    // TODO: NOGO create text
-                    // TODO: Clear Fields
+                    NoGoText.hidden = false;
+                    emailField.value = "";
+                    passwordField.value = "";
+                    usernameField.value = "";
                 }
             });
     });
@@ -308,6 +332,7 @@ function OwnerCreateManager() {
 function OwnerViewManagers() {
     document.title = "Managers";
     var usernameBoxUsername = document.getElementById('usernameBoxUsername');
+    usernameBoxUsername.innerHTML = loggedInUsername;
     var signOutBtn = document.getElementById('signout');
     var owneraddmanager = document.getElementById('owneraddmanager');
     var ownerviewemployees = document.getElementById('ownerviewemployees');
@@ -356,13 +381,46 @@ function OwnerViewManagers() {
 ///////////////////////////////////////////////////////////
 function OwnerCreateEmployee() {
     document.title = "Add Employee";
-    var usernameBoxUsername = document.getElementById('usernameBoxUsername');
-    var signOutBtn = document.getElementById('signout');
-    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
-    var owneraddmanager = document.getElementById('owneraddmanager');
-    var ownerviewemployees = document.getElementById('ownerviewemployees');
-    var ownerviewmessages = document.getElementById('ownerviewmessages');
-    var ownergototmessenger = document.getElementById('ownergotomessenger');
+    var usernameBoxUsername = document.getElementById('usernameBoxUsernameownercreateemployee');
+    usernameBoxUsername.innerHTML = loggedInUsername;
+    var signOutBtn = document.getElementById('signoutownercreateemployee');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagerscreateemployee');
+    var owneraddmanager = document.getElementById('owneraddmanagercreateemployee');
+    var ownerviewemployees = document.getElementById('ownerviewemployeescreateemployee');
+    var ownerviewmessages = document.getElementById('ownerviewmessagescreateemployee');
+    var ownergototmessenger = document.getElementById('ownergotomessengercreateemployee');
+    var emailField = document.getElementById('createemployeeemailownercreateemployee');
+    var usernameField = document.getElementById('createemployeeusernameownercreateemployee');
+    var passwordField = document.getElementById('createemployeepasswordownercreateemployee');
+    var managerUsernameField = document.getElementById('createemployeemanagerownercreateemployee');
+    var addemployeeBtn = document.getElementById('createemployeeownercreateemployee');
+    var NOGOText = document.getElementById('ownernewemployeeNogoText');
+
+    addemployeeBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        auth.createUserWithEmailAndPassword(emailField.value, passwordField.value)
+            .then(function (result) {
+                var newemployeeref = database.ref('Workplaces/' + userWorkplace + '/Managers/' + managerUsernameField.value + '/Users/' + usernameField.value);
+                var data = {
+                    Groups: [],
+                    Messages: [],
+                    Uid: result.user.uid,
+                    Username: usernameField.value
+                };
+                newemployeeref.set(data);
+                NOGOText.hidden = true;
+                Redirect('ownerviewemployees');
+            })
+            .catch(function (err) {
+                if (err != null) {
+                    NOGOText.hidden = false;
+                    emailField.value = "";
+                    usernameField.value = "";
+                    passwordField.value = "";
+                    managerUsernameField.value = "";
+                }
+            });
+    });
 
     usernameBoxUsername.addEventListener('click', function (e) {
         e.preventDefault();
@@ -451,14 +509,26 @@ function OwnerViewEmployees() {
 // Owner Account Information //////////////////////////////
 ///////////////////////////////////////////////////////////
 function OwnerAccountInformation() {
-    document.title = "Account Information";
-    var signOutBtn = document.getElementById('signout');
-    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
-    var owneraddmanager = document.getElementById('owneraddmanager');
-    var ownerviewemployees = document.getElementById('ownerviewemployees');
-    var owneraddemployee = document.getElementById('owneraddemployee');
-    var ownerviewmessages = document.getElementById('ownerviewmessages');
-    var ownergototmessenger = document.getElementById('ownergotomessenger');
+    document.title = "Account";
+    var usernameBoxUsername = document.getElementById('usernameBoxUsernameowneraccountinformation');
+    usernameBoxUsername.innerHTML = loggedInUsername;
+    var signOutBtn = document.getElementById('signoutowneraccountinformation');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagersaccountinformation');
+    var owneraddmanager = document.getElementById('owneraddmanageraccountinformation');
+    var ownerviewemployees = document.getElementById('ownerviewemployeesaccountinformation');
+    var owneraddemployee = document.getElementById('owneraddemployeeaccountinformation');
+    var ownerviewmessages = document.getElementById('ownerviewmessagesaccountinformation');
+    var ownergototmessenger = document.getElementById('ownergotomessengeraccountinformation');
+    var ownerinformationemailinner = document.getElementById('ownerinformationemailinner');
+    ownerinformationemailinner.innerHTML = loggedInEmail;
+    var ownerinformationusernameinner = document.getElementById('ownerinformationusernameinner');
+    ownerinformationusernameinner.innerHTML = loggedInUsername;
+    var ownerinformationworkplace = document.getElementById('ownerinformationworkplaceinner');
+    ownerinformationworkplace.innerHTML = userWorkplace;
+    var ownerinformationmanagers = document.getElementById('ownerinformationmanagers');
+    // TODO: ADD MANAGERS
+    var ownerinformationemployees = document.getElementById('ownerinformationemployees');
+    // TODO: ADD EMPLOYEES
 
     signOutBtn.addEventListener('click', function (e) {
         SignOut();
@@ -498,15 +568,17 @@ function OwnerAccountInformation() {
 // Owner View Messages ////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function OwnerViewMessages() {
-    document.title = "Home Page";
-    var usernameBoxUsername = document.getElementById('usernameBoxUsername');
-    var signOutBtn = document.getElementById('signout');
-    var ownerviewmanagers = document.getElementById('ownerviewmanagers');
-    var owneraddmanager = document.getElementById('owneraddmanager');
-    var ownerviewemployees = document.getElementById('ownerviewemployees');
-    var owneraddemployee = document.getElementById('owneraddemployee');
-    var ownerviewmessages = document.getElementById('ownerviewmessages');
-    var ownergototmessenger = document.getElementById('ownergotomessenger');
+    document.title = "View Messages";
+    var usernameBoxUsername = document.getElementById('usernameBoxUsernameownerviewmessages');
+    usernameBoxUsername.innerHTML = loggedInUsername;
+    var signOutBtn = document.getElementById('signoutownerviewmessages');
+    var ownerviewmanagers = document.getElementById('ownerviewmanagersviewmessages');
+    var owneraddmanager = document.getElementById('owneraddmanagerviewmessages');
+    var ownerviewemployees = document.getElementById('ownerviewemployeesviewmessages');
+    var owneraddemployee = document.getElementById('owneraddemployeemessages');
+    var ownergototmessenger = document.getElementById('ownergotomessengerviewmessages');
+    var messages = document.getElementById('ownerviewmessagesmessages');
+    // TODO: ADD MESSAGES
 
     usernameBoxUsername.addEventListener('click', function (e) {
         e.preventDefault();
@@ -551,42 +623,136 @@ function OwnerViewMessages() {
 // Manager Home Page //////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function ManagerHomePage() {
+    doucment.title = "Home";
+    var usernameDisplay = document.getElementById('usernameBoxUsernamemanagerhomepage');
+    usernameDisplay.innerHTML = loggedInUsername;
+    var signoutBtn = document.getElementById('signoutmanagerhomepage');
+    var managerviewemployees = document.getElementById('managerviewemployeeshomepage');
+    var manageraddemployee = document.getElementById('manageraddemployeehomepage');
+    var managerviewmessages = document.getElementById('managerviewmessageshomepage');
+    var managergotomessenger = document.getElementById('managergotomessengerhomepage');
 
+    usernameDisplay.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('manageraccountinformation');
+    });
+
+    signoutBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        SignOut();
+    });
+
+    managerviewemployees.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('managerviewemployees');
+    });
+
+    manageraddemployee.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('managercreateemployee');
+    });
+
+    managerviewmessages.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('managerviewmessages');
+    });
+
+    managergotomessenger.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('messaging');
+    });
 }
 
 // Manager Create Employee ////////////////////////////////
 ///////////////////////////////////////////////////////////
 function ManagerCreateEmployee() {
+    document.title = "Add Employee";
+    var usernameDisplay = document.getElementById('usernameBoxUsernamemanagercreateemployee');
+    usernameDisplay.innerHTML = loggedInUsername;
+    var signOutBtn = document.getElementById('signoutmanagercreateemployee');
+    var managerviewemployees = document.getElementById('managerviewemployeescreateemployee');
+    var managerviewmessages = document.getElementById('managerviewmessagescreateemployee');
+    var managergotomessenger = document.getElementById('managergotomessengercreateemployee');
+    var emailField = document.getElementById('createemployeeemailmanagercreateemployee');
+    var usernameField = document.getElementById('createemployeeusernamemanagercreateemployee');
+    var passwordField = document.getElementById('createemployeepasswordmanagercreateemployee');
+    var addemployeeBtn = document.getElementById('createemployeemanagercreateemployee');
+    var NOGOText = document.getElementById('managernewemployeeNogoText');
 
+    addemployeeBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        auth.createUserWithEmailAndPassword(emailField.value, passwordField.value)
+            .then(function (result) {
+                var newemployeeref = database.ref('Workplaces/' + userWorkplace + '/Managers/' + loggedInUsername + '/Users/' + usernameField.value);
+                var data = {
+                    Groups: [],
+                    Messages: [],
+                    Uid: result.user.uid,
+                    Username: usernameField.value
+                };
+                newemployeeref.set(data);
+                NOGOText.hidden = true;
+                Redirect('managerviewemployees');
+            })
+            .catch(function (err) {
+                if (err != null) {
+                    NOGOText.hidden = false;
+                    emailField.value = "";
+                    passwordField.value = "";
+                    usernameField.value = "";
+                }
+            });
+    });
+
+    signOutBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        SignOut();
+    });
+
+    managerviewemployees.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('managerviewemployees');
+    });
+
+    managerviewmessages.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('managerviewmessages');
+    });
+
+    managergotomessenger.addEventListener('click', function (e) {
+        e.preventDefault();
+        Redirect('messaging');
+    });
 }
 
 // Manager View Employees /////////////////////////////////
 ///////////////////////////////////////////////////////////
 function ManagerViewEmployees() {
-
+    docuemnt.title = "Employees";
 }
 
 // Manager View Messages //////////////////////////////////
 ///////////////////////////////////////////////////////////
 function ManagerViewMessages() {
-
+    document.title = "View Messages";
 }
 
 // Manager Account Information ////////////////////////////
 ///////////////////////////////////////////////////////////
 function ManagerAccountInformation() {
-
+    doucment.title = "Account";
 }
 
 // Employee Account Information ///////////////////////////
 ///////////////////////////////////////////////////////////
 function EmployeeAccountInformation() {
-
+    document.title = "Account";
 }
 
 // Messaging //////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function Messaging() {
+    doucment.title = "Messaging";
     var message = document.getElementById('message');
     var chat = document.getElementById('chat');
     var sendMessage = document.getElementById('sendMessage');
@@ -751,6 +917,10 @@ function Redirect(pageName) {
             ShowDiv('login');
             Login();
             break;
+        case 'ownerworkplacemenu':
+            ShoeDiv('ownerworkplacemenu');
+            OwnerWorkplaceMenu();
+            break;
         case 'ownerhomepage':
             ShowDiv('ownerhomepage');
             OwnerHomePage();
@@ -824,6 +994,7 @@ function SignOut() {
 
 function HideAllDivs() {
     document.getElementById('login').hidden = true;
+    document.getElementById('ownerworkplacemenu').hidden = true;
     document.getElementById('ownerhomepage').hidden = true;
     document.getElementById('ownercreatemanager').hidden = true;
     document.getElementById('ownerviewmanagers').hidden = true;
@@ -843,6 +1014,9 @@ function ShowDiv(divName) {
     switch (divName) {
         case 'login':
             document.getElementById('login').hidden = false;
+            break;
+        case 'ownerworkplacemenu':
+            document.getElementById('ownerworkplacemenu').hidden = false;
             break;
         case 'ownerhomepage':
             document.getElementById('ownerhomepage').hidden = false;

@@ -2,7 +2,7 @@
     text-align: center;
 }
 
-h4:hover{
+.cursor:hover{
     cursor: pointer;
 }
 
