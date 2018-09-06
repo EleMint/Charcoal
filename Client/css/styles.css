@@ -2,14 +2,43 @@
     text-align: center;
 }
 
+.underline{
+    text-decoration: underline;
+}
+
 .cursor:hover{
     cursor: pointer;
+}
+
+.messageControl{
+    position: fixed;
+    bottom: 10px;
+}
+
+.chat{
+    height: 300px;
+}
+
+#fixed{
+    position: fixed;
+    bottom: 10px;
+}
+
+.messageFormText{
+    margin-right: 0px;
+}
+
+.messageFormBtn{
+    width: 60px;
+    margin-left: 0px;
+    margin-right: 5px;
 }
 
 .usernameBox{
     margin: 0px, 0px, 0px, 0px;
     padding: 0px, 0px, 0px, 0px;
     border-bottom: 2px solid grey;
+    font-size: 175%;
 }
 
 .usernameBoxUsername:hover{
@@ -39,6 +68,11 @@
     display: inline;
 }
 
+.ViewManagers{
+    padding-left: 175px;
+    padding-bottom: 30px;
+}
+
 .mainbody{
     margin: 0px, 0px, 0px, 0px;
     padding: 15px, 0px, 0px, 0px;
@@ -58,32 +92,62 @@
     text-decoration: underline;
 }
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-body {font-family: Arial, Helvetica, sans-serif;}
 body {
     background: #686868;
 }
+
+.actions {
+    position: fixed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Full-width input fields */
 input[type=text], input[type=password] {

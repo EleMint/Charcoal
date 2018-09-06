@@ -6,6 +6,7 @@ let charcoalWindow;
 
 app.on('ready', createCharcoalWindow);
 app.on('window-all-closed', function(){
+    ipcMain.emit('user:logout');
     app.quit();
 });
 
@@ -14,8 +15,6 @@ function createCharcoalWindow(){
     const menu = Menu.buildFromTemplate(charcoalMenuTemplate);
     Menu.setApplicationMenu(menu);
     charcoalWindow.loadFile('./index.html');
-
-    charcoalWindow.toggleDevTools();
 
     charcoalWindow.on('closed', function(){
         charcoalWindow = null;
@@ -27,24 +26,19 @@ const charcoalMenuTemplate = [
         label: 'File',
         submenu: [
             {
-                label: 'Register',
-                click(){
-                    loginWindow.close();
-                    createRegisterWindow();
-                }
-            },
-            {
                 label: 'Logout',
                 click(){
-                    ipcMain.emit('logout');
+                    charcoalWindow.webContents.send('user:logout');
                 }
             },
             {
                 label: 'Quit',
                 accelerator: 'Ctrl+Q',
                 click(){
-                    ipcMain.emit('logout');
-                    app.quit();
+                    charcoalWindow.webContents.send('user:quit');
+                    ipcMain.on('user:quited', function(e){
+                        app.quit();
+                    });
                 }
             }
         ]
@@ -71,4 +65,16 @@ ipcMain.on('request:APIKeys', function(event){
     socket.on('requested:APIKeys', function(keys){
         event.sender.send('requested:APIKeys', keys);
     })
+});
+
+ipcMain.on('group:newGroup', function(event){
+    socket.emit('group:newGroup');
+});
+
+socket.on('group:servernewGroup', function(){
+    charcoal.webContents.send('group:servernewGroup');
+});
+
+socket.on('user:loggedin', function(event){
+    charcoalWindow.webContents.send('user:loggedin');
 });

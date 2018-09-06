@@ -23,19 +23,23 @@ var database = firebase.database();
 var auth = firebase.auth();
 
 io.on('connection', function(socket){
+    io.emit('user:connected')
     console.log('a user has joined');
     socket.on('request:APIKeys', function(){
         socket.emit('requested:APIKeys', keys);
     });
-    socket.on('message:received', function(messageReceived, from, to){
-
+    socket.on('user:loggedin', function(){
+        io.emit('user:loggedin');
+    });
+    socket.on('group:newGroup', function(){
+        socket.emit('group:servernewGroup');
     });
     socket.on('database:requestdatabaseandauth', function(){
         console.log('requested database', database);
         socket.emit('database:requesteddatabaseandauth', auth);
     });
     socket.on('disconnect', function(){
-        io.emit('user disconnected');
+        io.emit('user:disconnected');
         console.log('a user has disconnected');
     });
 });
