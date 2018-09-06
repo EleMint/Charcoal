@@ -117,12 +117,12 @@ function Login() {
         }
     };
 
-    var seed = document.getElementById('seed');
+    //var seed = document.getElementById('seed');
 
-    seed.addEventListener('click', function (e) {
-        e.preventDefault();
-        database.ref().set(data);
-    });
+    //seed.addEventListener('click', function (e) {
+    //    e.preventDefault();
+    //    database.ref().set(data);
+    //});
 
 
     // Login
