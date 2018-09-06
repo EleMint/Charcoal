@@ -7,6 +7,7 @@ var userRole;
 var database;
 var auth;
 
+
 Login();
 // Login //////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -117,6 +118,7 @@ function Login() {
     };
 
     var seed = document.getElementById('seed');
+
     seed.addEventListener('click', function (e) {
         e.preventDefault();
         database.ref().set(data);
@@ -134,6 +136,7 @@ function Login() {
                     userRole = await FindUserRole();
                     loggedInUsername = username.value;
                     loggedInEmail = email.value;
+                    ipcRenderer.send('user:loggedIn', loggedInUsername);
                     SetLoggedInStatus(true);
                     RedirectFromLogin();
                     clearLoginForm();
@@ -160,6 +163,7 @@ function Login() {
                     userWorkplace = workplace.value;
                     loggedInUsername = username.value;
                     database.ref('Workplaces/' + userWorkplace + '/Groups/' + loggedInUsername).set({ [loggedInUsername]: loggedInUsername });
+                    ipcRenderer.send('user:loggedIn', loggedInUsername);
                     SetLoggedInStatus(true);
                     changePage();
                     clearLoginForm();
@@ -228,16 +232,21 @@ function OwnerWorkplaceMenu() {
     usernameBoxUsername.innerHTML = loggedInUsername;
     var signoutBtn = document.getElementById('signoutownerworkplacemenu');
     var viewmanagers = document.getElementById('ownerviewmanagersworkplacemenu');
-    var addmanager = document.getElementById('owneraddmanagerworkplacemenu');
+    var addmanager = document.getElementById('ownercreatemanagerworkplacemenu');
     var viewemployees = document.getElementById('ownerviewemployeesworkplacemenu');
     var addemployee = document.getElementById('owneraddemployeeworkplacemenu');
     var gotomessenger = document.getElementById('ownergotomessengerworkplacemenu');
     var editBtn = document.getElementById('ownerworkplaceeditname');
     var deleteBtn = document.getElementById('ownerworkplacedelete');
+    var newWorkplaceName = document.getElementById('newWorkplaceName');
 
-    editBtn.addEventListener('click', function (e) {
+    editBtn.addEventListener('click', async function (e) {
         e.preventDefault();
-
+        var workplaceInformationRef = database.ref('Workplaces/' + userWorkplace);
+        var workplaceSnapshot = await workplaceInformationRef.once('value', function (data) { });
+        var workplaceInformation = workplaceSnapshot.val();
+        database.ref('Workplaces/' + userWorkplace).set({});
+        database.ref('Workplaces/' + newWorkplaceName.value).set(workplaceInformation);
     });
 
     deleteBtn.addEventListener('click', function (e) {
@@ -283,18 +292,18 @@ function OwnerWorkplaceMenu() {
 
 // Confirmation ///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
-function Confirmation(){
+function Confirmation() {
     document.title = 'Confirmation';
     var deleteBtn = document.getElementById('confirmationDelete');
     var cancelBtn = document.getElementById('confirmationCancel');
 
-    deleteBtn.addEventListener('click', function(e){
+    deleteBtn.addEventListener('click', function (e) {
         e.preventDefault();
         database.ref('Workplaces/' + userWorkplace).set({});
         Redirect('login');
     });
 
-    cancelBtn.addEventListener('click', function(e){
+    cancelBtn.addEventListener('click', function (e) {
         e.preventDefault();
         Redirect('ownerworkplacemenu');
     });
@@ -422,7 +431,8 @@ function OwnerCreateManager() {
         e.preventDefault();
         auth.createUserWithEmailAndPassword(emailField.value, passwordField.value)
             .then(function (result) {
-                var newmanagerref = database.ref('Workplaces/' + userWorkplace + '/Managers/' + usernameField.value);
+                var managerUsername = usernameField.value;
+                var newmanagerref = database.ref('Workplaces/' + userWorkplace + '/Managers/' + managerUsername);
                 var data = {
                     Account: {
                         Uid: result.user.uid,
@@ -591,6 +601,10 @@ function OwnerCreateEmployee() {
                 };
                 newemployeeref.set(data);
                 NOGOText.hidden = true;
+                emailField.value = "";
+                usernameField.value = "";
+                passwordField.value = "";
+                managerUsernameField.value = "";
                 Redirect('ownerviewemployees');
             })
             .catch(function (err) {
@@ -846,17 +860,17 @@ async function OwnerAccountInformation() {
     });
 
     var notificationsOnBtn = document.getElementById('ownernotificationson');
-    notificationsOnBtn.addEventListener('click', function(e){
+    notificationsOnBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        database.ref('Workplaces/' + userWorkplace + '/Owner/Account/Notifications').set({Notifications: 'ON'});
+        database.ref('Workplaces/' + userWorkplace + '/Owner/Account/Notifications').set({ Notifications: 'ON' });
         notificationsOnBtn.disabled = 'disabled';
         notificationsOffBtn.disabled = false;
     });
 
     var notificationsOffBtn = document.getElementById('ownernotificationsoff');
-    notificationsOffBtn.addEventListener('click', function(e){
+    notificationsOffBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        database.ref('Workplaces/' + userWorkplace + '/Owner/Account/Notifications').set({Notifications: 'OFF'});
+        database.ref('Workplaces/' + userWorkplace + '/Owner/Account/Notifications').set({ Notifications: 'OFF' });
         notificationsOnBtn.disabled = false;
         notificationsOffBtn.disabled = 'disabled';
     });
@@ -912,6 +926,9 @@ async function OwnerViewMessages() {
         newMessageDiv.appendChild(newMessageBodyDiv);
         newMessageDiv.appendChild(newMessageInfoDiv);
         messagesDiv.appendChild(newMessageDiv);
+
+        var newBreak = document.createElement('br');
+        messagesDiv.appendChild(newBreak);
     }
 
 
@@ -1275,17 +1292,17 @@ async function ManagerAccountInformation() {
     });
 
     var notificationsOnBtn = document.getElementById('managernotificationson');
-    notificationsOnBtn.addEventListener('click', function(e){
+    notificationsOnBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        database.ref('Workplaces/' + userWorkplace + '/Managers/' + loggedInUsername + '/Account/Notifications').set({Notifications: 'ON'});
+        database.ref('Workplaces/' + userWorkplace + '/Managers/' + loggedInUsername + '/Account/Notifications').set({ Notifications: 'ON' });
         notificationsOnBtn.disabled = 'disabled';
         notificationsOffBtn.disabled = false;
     });
 
     var notificationsOffBtn = document.getElementById('managernotificationsoff');
-    notificationsOffBtn.addEventListener('click', function(e){
+    notificationsOffBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        database.ref('Workplaces/' + userWorkplace + '/Managers/' + loggedInUsername + '/Account/Notifications').set({Notifications: 'OFF'});
+        database.ref('Workplaces/' + userWorkplace + '/Managers/' + loggedInUsername + '/Account/Notifications').set({ Notifications: 'OFF' });
         notificationsOnBtn.disabled = false;
         notificationsOffBtn.disabled = 'disabled';
     });
@@ -1316,17 +1333,17 @@ async function EmployeeAccountInformation() {
     });
 
     var managersRef = database.ref('Workplaces/' + userWorkplace + '/Managers');
-    var managerssnapshot = await managersRef.once('value', function(data){ });
+    var managerssnapshot = await managersRef.once('value', function (data) { });
     var allManagers = managerssnapshot.val();
 
     var notificationsOnBtn = document.getElementById('employeenotificationson');
-    notificationsOnBtn.addEventListener('click', function(e){
+    notificationsOnBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        for(var manager in allManagers){
+        for (var manager in allManagers) {
             var managerUsers = allManagers[manager].Users;
-            for(var user in managerUsers){
-                if(user == loggedInUsername){
-                    database.ref('Workplaces/' + userWorkplace + '/Managers/' + manager + '/Users/' + user + '/Notifications').set({Notifications: 'ON'});
+            for (var user in managerUsers) {
+                if (user == loggedInUsername) {
+                    database.ref('Workplaces/' + userWorkplace + '/Managers/' + manager + '/Users/' + user + '/Notifications').set({ Notifications: 'ON' });
                     break;
                 }
             }
@@ -1336,13 +1353,13 @@ async function EmployeeAccountInformation() {
     });
 
     var notificationsOffBtn = document.getElementById('employeenotificationsoff');
-    notificationsOffBtn.addEventListener('click', function(e){
+    notificationsOffBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        for(var manager in allManagers){
+        for (var manager in allManagers) {
             var managerUsers = allManagers[manager].Users;
-            for(var user in managerUsers){
-                if(user == loggedInUsername){
-                    database.ref('Workplaces/' + userWorkplace + '/Managers/' + manager + '/Users/' + user + '/Notifications').set({Notifications: 'OFF'});
+            for (var user in managerUsers) {
+                if (user == loggedInUsername) {
+                    database.ref('Workplaces/' + userWorkplace + '/Managers/' + manager + '/Users/' + user + '/Notifications').set({ Notifications: 'OFF' });
                     break;
                 }
             }
@@ -1362,18 +1379,19 @@ async function Messaging() {
     var message = document.getElementById('message');
     var chatOutterDiv = document.getElementById('chatOutterDiv');
     var chat = document.getElementById('chat');
-    var newChat;
+    //var newChat;
     var sendMessage = document.getElementById('sendMessage');
     var usersOutterDiv = document.getElementById('usersOutterDiv');
     var users = document.getElementById('users');
-    var newUsersDiv;
+    //var newUsersDiv;
     var groupsOutterDiv = document.getElementById('groupsOutterDiv');
     var groups = document.getElementById('groups');
-    var newGroupsDiv;
+    //var newGroupsDiv;
     var addGroupBtn = document.getElementById('addGroup');
     var groupName = document.getElementById('newGroupText');
     var groupMemberText = document.getElementById('newGroupMembers');
     var currentGroupName = loggedInUsername;
+    var currentGroup = 'Group:' + currentGroupName;
 
     usernameBoxUsername.addEventListener('click', function (e) {
         e.preventDefault();
@@ -1395,86 +1413,6 @@ async function Messaging() {
     signout.addEventListener('click', function (e) {
         e.preventDefault();
         SignOut();
-    });
-
-    GetOnlineUsers(users, usersOutterDiv);
-    GetGroups(groups, groupsOutterDiv);
-    GetMessages(chat, chatOutterDiv, 'Group:' + loggedInUsername);
-
-    async function GetMessages(chat, chatOutterDiv, groupName) {
-
-        chatOutterDiv.removeChild(chat);
-        newChat = document.createElement('div');
-        newChat.setAttribute('id', 'chat');
-        newChat.setAttribute('style', 'height:500px;');
-        newChat.setAttribute('class', 'container');
-
-        chatOutterDiv.appendChild(newChat);
-
-        var messagesRef = database.ref('Workplaces/' + userWorkplace + '/Messages');
-        var messagesSnapshot = await messagesRef.once('value', function (data) { });
-        var allMessages = messagesSnapshot.val();
-        for (var message in allMessages) {
-            var curMessage = allMessages[message];
-            if (curMessage.messageTo == groupName) {
-                appendMessage(curMessage);
-            }
-        }
-    }
-
-    async function GetGroups(groups, groupsOutterDiv) {
-        groups.parentNode.removeChild(groups);
-        newGroupsDiv = document.createElement('div');
-        newGroupsDiv.setAttribute('id', 'groups');
-        newGroupsDiv.setAttribute('class', 'center groups');
-        groupsOutterDiv.appendChild(newGroupsDiv);
-
-        var groupsRef = database.ref('Workplaces/' + userWorkplace + '/Groups/');
-        var groupsSnapshot = await groupsRef.once('value', function (data) { });
-        var currentGroups = groupsSnapshot.val();
-        for (var group in currentGroups) {
-            appendGroup(group);
-        }
-    }
-
-    async function GetOnlineUsers(users, usersOutterDiv) {
-        users.parentNode.removeChild(users);
-        newUsersDiv = document.createElement('div');
-        newUsersDiv.setAttribute('id', 'users');
-        newUsersDiv.setAttribute('class', 'center groups');
-        usersOutterDiv.appendChild(newUsersDiv);
-
-        var onlineUsers = [];
-        var workplaceRef = database.ref('Workplaces/' + userWorkplace);
-        var workplaceSnapshot = await workplaceRef.once('value', function (data) { });
-        var workplaceData = workplaceSnapshot.val();
-        if (workplaceData.Owner.Account.LoggedIn.LoggedIn == true) {
-            onlineUsers.push(workplaceData.Owner.Account.Username);
-        }
-        var ManagerData = workplaceData.Managers;
-        for (var manager in ManagerData) {
-            if (ManagerData[manager].Account.LoggedIn.LoggedIn == true) {
-                onlineUsers.push(ManagerData[manager].Account.Username);
-            }
-            var allusers = ManagerData[manager].Users;
-            for (var user in allusers) {
-                if (allusers[user].LoggedIn.LoggedIn == true) {
-                    onlineUsers.push(allusers[user].Username);
-                }
-            }
-        }
-        for (let i = 0; i < onlineUsers.length; i++) {
-            appendUser(onlineUsers[i]);
-        }
-    }
-
-    // On User Connection and Disconnection
-    ipcRenderer.on('user:connected', function (event) {
-        GetOnlineUsers();
-    });
-
-    ipcRenderer.on('user:disconnected', function (event) {
-        GetOnlineUsers();
     });
 
     addGroupBtn.addEventListener('click', async function (e) {
@@ -1508,34 +1446,156 @@ async function Messaging() {
         groupMemberText.value = "";
     });
 
-    ipcRenderer.on('group:newGroup', function (event) {
-        GetGroups();
+    GetOnlineUsers();
+    GetGroups();
+    GetMessages(currentGroup);
+
+    ipcRenderer.on('user:loggedin', function (event, username) {
+        AppendUser(username);
     });
 
-    // Send Message
+    ipcRenderer.on('user:loggedout', function (event) {
+        GetOnlineUsers();
+    });
+
+    ipcRenderer.on('group:newGroup', function (event, groupName) {
+        AppendGroup(groupName);
+    });
+
     sendMessage.addEventListener('click', function (e) {
         e.preventDefault();
-        // TODO: Figure Out To Whom
-        ipcRenderer.send('message:fromuser', message.value, loggedInUser);
+        database.ref('Workplaces/' + userWorkplace + '/Messages/' + Date.now()).set({
+            messageAt: Date.now(),
+            messageBody: message.value,
+            messageFrom: loggedInUsername,
+            messageTo: currentGroup
+        });
+        var messageData = {
+            messageAt: Date.now(),
+            messageBody: message.value,
+            messageFrom: loggedInUsername,
+            messageTo: currentGroup
+        };
         message.value = "";
+        ipcRenderer.send('message:outboundMessage', messageData);
     });
 
-    // Incoming Message
-    ipcRenderer.on('message:send', function (message, fromUser, fromGroup) {
-        // TODO: Figure Out
-        // TODO: ADD NOTIFICATIONS
+    ipcRenderer.on('message:incomingMessage', async function (messageData) {
+        if (messageData.messageTo == currentGroup) {
+            AppendMessage(messageData);
+            // if(userRole == 'owner'){
+            //     var notificationRef = database.ref('Workplaces/' + userWorkplace + '/Owner/Account/Notifications');
+            //     var notificationSnapshot = await notificationRef.once('value', function(data){ });
+            //     var notificationSetting = notificationSnapshot.val();
+            //     if(notificationSetting != null || notificationSetting == 'ON'){
+            //         // TODO: ADD NOTIFICATION
+            //     }
+            // } else if(userRole == 'manager'){
+            //     var notificationRef = database.ref('Workplaces/' + userWorkplace + '/Managers/' + loggedInUsername + '/Account/Notifications');
+            //     var notificationSnapshot = await notificationRef.once('value', function(data){ });
+            //     var notificationSetting = notificationSnapshot.val();
+            //     if(notificationSetting != null || notificationSetting == 'ON'){
+            //         // TODO: ADD NOTIFICATION
+            //     }
+            // }   else {
+            //     var managersRef = database.ref('Workplaces/' + userWorkplace + '/Managers');
+            //     var managerssnapshot = await managersRef.once('value', function(data){ });
+            //     var managers = managerssnapshot.val();
+            //     for(var manager in managers){
+            //         var curUsers = managers[manager].Users;
+            //         for(var user in curUsers){
+            //             if(user == loggedInUsername){
+            //                 if(notificationSetting != null || notificationSetting == 'ON'){
+            //                     // TODO: ADD NOTIFICATION
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+
+            // var incomingNote = new Notification('You've Got A New Message');
+        }
     });
 
-    // Append Users, Messages, Groups
-    function appendUser(username) {
+    async function GetOnlineUsers() {
+        ClearUsers();
+        var onlineUsers = [];
+        var workplaceRef = database.ref('Workplaces/' + userWorkplace);
+        var workplaceSnapshot = await workplaceRef.once('value', function (data) { });
+        var workplaceData = workplaceSnapshot.val();
+        if (workplaceData.Owner.Account.LoggedIn.LoggedIn == true || workplaceData.Owner.Account.LoggedIn.LoggedIn == null) {
+            onlineUsers.push(workplaceData.Owner.Account.Username);
+        }
+        var ManagerData = workplaceData.Managers;
+        for (var manager in ManagerData) {
+            if (ManagerData[manager].Account.LoggedIn.LoggedIn == true || ManagerData[manager].Account.LoggedIn.LoggedIn == null) {
+                onlineUsers.push(ManagerData[manager].Account.Username);
+            }
+            var allusers = ManagerData[manager].Users;
+            for (var user in allusers) {
+                if (allusers[user].LoggedIn.LoggedIn == true || allusers[user].LoggedIn.LoggedIn == null) {
+                    onlineUsers.push(allusers[user].Username);
+                }
+            }
+        }
+        for (let i = 0; i < onlineUsers.length; i++) {
+            AppendUser(onlineUsers[i]);
+        }
+    }
+
+    async function GetGroups() {
+        ClearGroups();
+        var groupsRef = database.ref('Workplaces/' + userWorkplace + '/Groups/');
+        var groupsSnapshot = await groupsRef.once('value', function (data) { });
+        var currentGroups = groupsSnapshot.val();
+        for (var group in currentGroups) {
+            for (let i = 0; i < currentGroups[group].length; i++) {
+                if (currentGroups[group][i] == loggedInUsername) {
+                    AppendGroup(group);
+                    break;
+                }
+            }
+        }
+    }
+
+    async function GetMessages(groupName) {
+        ClearMessages();
+        var messagesRef = database.ref('Workplaces/' + userWorkplace + '/Messages');
+        var messagesSnapshot = await messagesRef.once('value', function (data) { });
+        var allMessages = messagesSnapshot.val();
+        for (var message in allMessages) {
+            var curMessage = allMessages[message];
+            if (curMessage.messageTo == 'Group:' + groupName) {
+                AppendMessage(curMessage);
+            }
+        }
+    }
+
+    function AppendUser(username) {
         var userDiv = document.createElement('div');
         var text = document.createTextNode(username);
         userDiv.appendChild(text);
         users.appendChild(userDiv);
     }
 
-    function appendMessage(messageObject) {
-        chat.innerHTML = "";
+    function AppendGroup(groupName) {
+        var groupDiv = document.createElement('div');
+        var text = document.createTextNode(groupName);
+        groupDiv.appendChild(text);
+        groupDiv.setAttribute('class', 'cursor');
+        groups.appendChild(groupDiv);
+        currentGroupName = groupName;
+        AddEventGroup(groupDiv, currentGroupName);
+    }
+
+    function AddEventGroup(element, groupName) {
+        element.addEventListener('click', function (e) {
+            e.preventDefault();
+            GetMessages(groupName);
+        });
+    }
+
+    function AppendMessage(messageObject) {
         var newMessageDiv = document.createElement('div');
 
         var messageBodyText = document.createTextNode(messageObject.messageBody);
@@ -1569,47 +1629,20 @@ async function Messaging() {
         chat.appendChild(newMessageDiv);
     }
 
-    function appendGroup(groupName) {
-        var groupDiv = document.createElement('div');
-        var text = document.createTextNode(groupName);
-        groupDiv.appendChild(text);
-        groupDiv.setAttribute('class', 'cursor');
-        groups.appendChild(groupDiv);
-        currentGroupName = groupName;
-        AddListener(groupDiv, currentGroupName);
+    function ClearUsers() {
+        users.parentElement.remove(users);
     }
 
-    function AddListener(addition, groupName) {
-        addition.addEventListener('click', function (e) {
-            e.preventDefault();
-            FindMessagesByGroupName(groupName);
-        });
+    function ClearGroups() {
+        groups.parentElement.remove(groups);
     }
 
-    ipcRenderer.on('logout', function () {
-        auth.signOut()
-            .then(function () {
-                signOutProcedure();
-            })
-            .catch(function (err) {
-                if (err != null) {
-                    console.log(err);
-                }
-            });
-    });
+    function ClearMessages() {
+        chat.parentElement.remove(chat);
 
-
-    async function FindMessagesByGroupName(groupName) {
-        var messagesRef = database.ref('Workplaces/' + userWorkplace + '/Messages');
-        var messagesSnapshot = await messagesRef.once('value', function (data) { });
-        var allMessages = messagesSnapshot.val();
-        for (var message in allMessages) {
-            if (allMessages[message].messageTo == 'Group:' + groupName) {
-                appendMessage(allMessages[message]);
-            }
-        }
     }
 }
+
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 function Redirect(pageName) {
@@ -1724,6 +1757,7 @@ ipcRenderer.on('user:quit', function (e) {
 });
 
 async function SignOut() {
+    ipcRenderer.send('user:loggedOut');
     await SetLoggedInStatus(false);
     auth.signOut().then(function (result) {
         loggedInUser = null;

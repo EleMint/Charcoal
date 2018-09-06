@@ -4,7 +4,9 @@
   "description": "Charcoal Client",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package": "asar pack Charcoal-win32-x64/Charcoal.app/Contents/Resources/app Charcoal-win32-x64/Charcoal.app/Contents/Resources/app.asar",
+    "build": "electron-packager . Charcoal"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,9 @@
   "dependencies": {
     "electron": "^2.0.8",
     "socket.io-client": "^2.1.1"
+  },
+  "devDependencies": {
+    "asar": "^0.14.3",
+    "electron-packager": "^12.1.1"
   }
 }

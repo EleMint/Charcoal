@@ -11,7 +11,7 @@ app.on('window-all-closed', function(){
 });
 
 function createCharcoalWindow(){
-    charcoalWindow = new BrowserWindow({width: 800, height: 650});
+    charcoalWindow = new BrowserWindow({width: 800, height: 650, icon: './carbon.png'});
     const menu = Menu.buildFromTemplate(charcoalMenuTemplate);
     Menu.setApplicationMenu(menu);
     charcoalWindow.loadFile('./index.html');
@@ -42,22 +42,22 @@ const charcoalMenuTemplate = [
                 }
             }
         ]
-    },
-    {
-        label: 'Dev',
-        submenu: [
-            {
-                label: 'Dev Tools',
-                accelerator: 'Ctrl+D',
-                click(){
-                    charcoalWindow.toggleDevTools();
-                }
-            },
-            {
-                role: 'reload'
-            }
-        ]
-    }
+     }//,
+    //  {
+    //      label: 'Dev',
+    //      submenu: [
+    //          {
+    //              label: 'Dev Tools',
+    //              accelerator: 'Ctrl+D',
+    //              click(){
+    //                  charcoalWindow.toggleDevTools();
+    //              }
+    //         },
+    //          {
+    //              role: 'reload'
+    //         }
+    //      ]
+    //  }
 ];
 
 ipcMain.on('request:APIKeys', function(event){
@@ -75,6 +75,26 @@ socket.on('group:servernewGroup', function(){
     charcoal.webContents.send('group:servernewGroup');
 });
 
-socket.on('user:loggedin', function(event){
-    charcoalWindow.webContents.send('user:loggedin');
+ipcMain.on('user:loggedOut', function(event){
+    socket.emit('user:loggedOut');
+});
+
+socket.on('user:loggedout', function(event){
+    charcoalWindow.webContents.send('user:loggedout');
+});
+
+ipcMain.on('user:loggedIn', function(event, username){
+    socket.emit('user:loggedIn', username);
+});
+
+socket.on('user:loggedin', function(event, username){
+    charcoalWindow.webContents.send('user:loggedin', username);
+});
+
+ipcMain.on('message:outboundMessage', function(event, messageData){
+    socket.emit('message:outboundMessage', messageData);
+});
+
+socket.on('message:inboundMessage', function(messageData){
+    charcoalWindow.webContents.send('message:inboundMessage', messageData);
 });

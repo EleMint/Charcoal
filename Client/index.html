@@ -29,16 +29,16 @@
                     <form>
                         <div class="form-group">
                             <label for="loginEmailField">Email Address</label>
-                            <input autofocus type="text" value="owner@owner.com" id="loginEmailField" placeholder="Email" class="form-control">
+                            <input autofocus type="text" id="loginEmailField" placeholder="Email" class="form-control">
 
                             <label for="loginUsernameField">Username</label>
-                            <input type="text" id="loginUsernameField" value="owner" placeholder="Username" class="form-control">
+                            <input type="text" id="loginUsernameField" placeholder="Username" class="form-control">
 
                             <label for="loginPasswordField">Password</label>
-                            <input type="password" id="loginPasswordField" value="password" placeholder="Password" class="form-control">
+                            <input type="password" id="loginPasswordField" placeholder="Password" class="form-control">
 
                             <label for="loginWorkplaceField">Workplace</label>
-                            <input type="text" id="loginWorkplaceField" value="dCC" placeholder="Workplace" class="form-control">
+                            <input type="text" id="loginWorkplaceField" placeholder="Workplace" class="form-control">
                         </div>
                         <div class="center">
                             <input type="button" id="loginBtn" class="btn btn-primary" value="Login" style="width:150px;">
@@ -73,9 +73,11 @@
                     </div>
                 </div>
                 <div class="col-md-8 mainbody center">
-                    <!-- TODO: Workplace CRUD -->
                     <h3 class="mainbodyHeading center">Workplace</h3>
                     <br/>
+                    <div class="row center">
+                        <input type="text" id="newWorkplaceName" class="form-group" style="margin-right:10px;" placeholder="New Workplace Name">
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <h4 id="ownerworkplacenameinner" class="tabbed">dCC</h4>

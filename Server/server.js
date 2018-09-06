@@ -23,13 +23,19 @@ var database = firebase.database();
 var auth = firebase.auth();
 
 io.on('connection', function(socket){
-    io.emit('user:connected')
-    console.log('a user has joined');
+    io.emit('user:connected');
+    console.log('A User Has Joined');
     socket.on('request:APIKeys', function(){
         socket.emit('requested:APIKeys', keys);
     });
-    socket.on('user:loggedin', function(){
-        io.emit('user:loggedin');
+    socket.on('user:loggedIn', function(username){
+        io.emit('user:loggedin', username);
+    });
+    socket.on('user:loggedOut', function(){
+        io.emit('user:loggedout');
+    });
+    socket.on('message:outboundMessage', function(messageData){
+        socket.emit('message:inboundMessage', messageData);
     });
     socket.on('group:newGroup', function(){
         socket.emit('group:servernewGroup');
@@ -40,6 +46,6 @@ io.on('connection', function(socket){
     });
     socket.on('disconnect', function(){
         io.emit('user:disconnected');
-        console.log('a user has disconnected');
+        console.log('A User Has Disconnected');
     });
 });
